@@ -30,6 +30,10 @@ jobs:
           use-dotnet: true
           include-templates: false
 
+      # The action sets GODOT to a link with no .exe extension, which cmd
+      # cannot run, so point at the real executable it unpacked.
       - name: Build, sim tests and boot smoke test
         shell: cmd
-        run: .\test.bat
+        run: |
+          set GODOT=%USERPROFILE%\godot\Godot_v4.7.1-stable_mono_win64\Godot_v4.7.1-stable_mono_win64.exe
+          call .\test.bat
