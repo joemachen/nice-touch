@@ -1,0 +1,35 @@
+name: CI
+
+# Every push to main runs the same test.bat Joe runs: build, sim tests and
+# the boot smoke test. main must stay green (CLAUDE.md).
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    # Windows, because test.bat is the one definition of "green" and the
+    # game ships on Windows.
+    runs-on: windows-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      # Installs Godot so the boot smoke test can run here. Keep the
+      # version matched to README.md.
+      - uses: chickensoft-games/setup-godot@v2
+        with:
+          version: 4.7.1
+          use-dotnet: true
+          include-templates: false
+
+      - name: Build, sim tests and boot smoke test
+        shell: cmd
+        run: .\test.bat
