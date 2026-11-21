@@ -14,49 +14,30 @@ A living document. It is updated in the same commit as the work it describes.
 
 Last updated: 2026-11-21
 
-## Now: M0, foundation
-
-Goal: an empty game that builds, tests and runs with one command each, so
-every later change lands on rails.
-
-Spec: specs/M0-foundation.md (approved 2026-11-21).
-
-All tasks are done. Waiting for Joe's QA sign-off.
-
-- [x] Confirm the Godot version and record it in README.md
-- [x] Create the Godot project in `game/` and the solution with
-      `NiceTouch.Sim` and `NiceTouch.Sim.Tests`
-- [x] The sim ticks 60 times a second, driven by Godot's fixed tick
-- [x] One real sim test passing (ball advances one tick)
-- [x] `run.bat` launches the game, `test.bat` runs the tests
-- [x] Boot smoke test: the game starts without a window, runs briefly and
-      exits cleanly
-- [x] CI on GitHub Actions: build, test and boot smoke test on every push
-- [x] A window opens showing the empty tunnel
-
-Exit test: fresh clone, `test.bat` is green (sim tests and boot smoke test),
-`run.bat` opens the tunnel, CI is green on main.
-
-## Next: M1a, the rally
+## Now: M1a, the rally
 
 Goal: find out whether the swipe feels good, as early as possible.
 
-- Ball, both paddles, spin, walls, serve and miss
-- Spin that bends the flight, changes the bounce off a wall and can be seen
-  on the ball
-- A debug tuning panel so feel can be tuned in QA without code changes
-- The input recorder (a key saves the last 30 seconds of play to a file)
-- Placeholder visuals and sound are fine
+Spec: specs/M1a-the-rally.md (awaiting Joe's approval). The task list is
+written here once the spec is approved.
 
 Exit test: sim tests green, and Joe can rally, bend shots, and answer yes to
-every item on the feel checklist written in the M1a spec.
+every item on the feel checklist in the M1a spec.
+
+## Next: M1b, the game
+
+Goal: the rally becomes a game you can win and lose.
+
+- Lives, levels, scoring, score and lives display, level clear, game over,
+  restart
+- The "Nice touch" call-out for big plays
+
+Exit test: written in the M1b spec.
 
 ## Later
 
 In intended order. Details get written when each becomes Next.
 
-- **M1b, the game.** Lives, levels, scoring, score and lives display, level
-  clear, game over, restart. The "Nice touch" call-out for big plays.
 - **M2, juice and shell.** Hit pause, shake, trails, real sound, menus,
   settings, local high scores. Windows export and a release pipeline. Ends
   with the first build shared with outside players (v0.1) as a quiet playtest
@@ -68,6 +49,12 @@ In intended order. Details get written when each becomes Next.
 - **M4, bosses.** Named opponents with their own rule and a tell. Start with
   three.
 - **M5, ship.** Store page, trailer capture, final art and audio pass, v1.0.
+
+## Done
+
+- **M0, foundation.** Signed off by Joe on 2026-11-21. The game builds, tests
+  and runs with one command each, and CI runs the same checks on every push.
+  Spec: specs/M0-foundation.md.
 
 ## Decisions needed
 
