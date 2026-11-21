@@ -21,6 +21,8 @@ every later change lands on rails.
 
 Spec: specs/M0-foundation.md (approved 2026-11-21).
 
+All tasks are done. Waiting for Joe's QA sign-off.
+
 - [x] Confirm the Godot version and record it in README.md
 - [x] Create the Godot project in `game/` and the solution with
       `NiceTouch.Sim` and `NiceTouch.Sim.Tests`
@@ -99,3 +101,5 @@ In intended order. Details get written when each becomes Next.
 | 2026-11-21 | v0.1 is a quiet playtest on an unlisted page | The run is the hook, and it does not exist yet at M2 |
 | 2026-11-21 | First run capped at about 8 upgrades and 5 opponents | One tester cannot balance an open-ended set |
 | 2026-11-21 | Working agreement: changelog once per session, failing-test rule for sim bugs only, warnings fail the sim build, straight to main, QA handoff names the commit, bug report format, asset credits | See CLAUDE.md. Each removes noise or closes a gap found in the plan review |
+| 2026-11-21 | The projects target .NET 10 | .NET 8 went out of support this month, and Godot 4.7.1 builds and runs the game on .NET 10 |
+| 2026-11-21 | CI runs on Windows and calls `test.bat` | One definition of green, shared by Joe's machine and GitHub |

@@ -4,8 +4,15 @@ Working title. An original 3D tunnel pong game about spin: swipe the paddle
 through the ball to bend the shot. It will grow into a roguelike run with boss
 opponents.
 
-**Status:** planning. There is no playable build yet. See
-[ROADMAP.md](ROADMAP.md) for what is being built now.
+**Status:** foundation (milestone M0). The game opens an empty tunnel and
+nothing else. There is nothing to play yet. See [ROADMAP.md](ROADMAP.md) for
+what is being built now.
+
+## Run it
+
+- **`run.bat`** builds the game and opens it.
+- **`test.bat`** builds, runs the rules tests, then boots the game with no
+  window to check it starts. The last line says PASS or FAIL.
 
 ## Documents
 
@@ -20,10 +27,7 @@ opponents.
 | Tool | Version | Notes |
 |---|---|---|
 | Godot | 4.7.1 stable, .NET build | Expected at `D:\Projects\Godot\Godot_v4.7.1-stable_mono_win64\`. Set the `GODOT` environment variable to the editor executable if it lives elsewhere. |
-| .NET SDK | 10 | To be confirmed against Godot in M0. .NET 8 is the fallback. |
-
-`run.bat` (play the game) and `test.bat` (run the tests) arrive with
-milestone M0.
+| .NET SDK | 10 | |
 
 ## Licence
 
