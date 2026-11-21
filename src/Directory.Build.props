@@ -1,0 +1,8 @@
+<Project>
+  <!-- The sim and its tests fail the build on any warning (CLAUDE.md).
+       This file sits in src/ so it does not reach the Godot project, whose
+       generated code we do not control. -->
+  <PropertyGroup>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+</Project>
