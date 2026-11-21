@@ -1,6 +1,6 @@
 # M0: foundation
 
-Status: **draft, awaiting Joe's approval.** No code is written until approved.
+Status: **approved by Joe, 2026-11-21.**
 
 ## Goal
 

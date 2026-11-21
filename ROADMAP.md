@@ -19,7 +19,7 @@ Last updated: 2026-11-21
 Goal: an empty game that builds, tests and runs with one command each, so
 every later change lands on rails.
 
-Spec: specs/M0-foundation.md (awaiting Joe's approval).
+Spec: specs/M0-foundation.md (approved 2026-11-21).
 
 - [x] Confirm the Godot version and record it in README.md
 - [ ] Create the Godot project in `game/` and the solution with
