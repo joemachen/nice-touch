@@ -22,15 +22,15 @@ every later change lands on rails.
 Spec: specs/M0-foundation.md (approved 2026-11-21).
 
 - [x] Confirm the Godot version and record it in README.md
-- [ ] Create the Godot project in `game/` and the solution with
+- [x] Create the Godot project in `game/` and the solution with
       `NiceTouch.Sim` and `NiceTouch.Sim.Tests`
-- [ ] The sim ticks 60 times a second, driven by Godot's fixed tick
-- [ ] One real sim test passing (ball advances one tick)
+- [x] The sim ticks 60 times a second, driven by Godot's fixed tick
+- [x] One real sim test passing (ball advances one tick)
 - [ ] `run.bat` launches the game, `test.bat` runs the tests
 - [ ] Boot smoke test: the game starts without a window, runs briefly and
       exits cleanly
 - [ ] CI on GitHub Actions: build, test and boot smoke test on every push
-- [ ] A window opens showing the empty tunnel
+- [x] A window opens showing the empty tunnel
 
 Exit test: fresh clone, `test.bat` is green (sim tests and boot smoke test),
 `run.bat` opens the tunnel, CI is green on main.
