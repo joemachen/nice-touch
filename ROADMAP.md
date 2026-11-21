@@ -26,8 +26,8 @@ Spec: specs/M0-foundation.md (approved 2026-11-21).
       `NiceTouch.Sim` and `NiceTouch.Sim.Tests`
 - [x] The sim ticks 60 times a second, driven by Godot's fixed tick
 - [x] One real sim test passing (ball advances one tick)
-- [ ] `run.bat` launches the game, `test.bat` runs the tests
-- [ ] Boot smoke test: the game starts without a window, runs briefly and
+- [x] `run.bat` launches the game, `test.bat` runs the tests
+- [x] Boot smoke test: the game starts without a window, runs briefly and
       exits cleanly
 - [ ] CI on GitHub Actions: build, test and boot smoke test on every push
 - [x] A window opens showing the empty tunnel
