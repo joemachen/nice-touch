@@ -1,0 +1,106 @@
+# Nice Touch: design
+
+Working title. An original 3D tunnel pong game about spin, grown into a
+roguelike run with boss opponents.
+
+It takes its starting point from the tunnel-pong Flash games of the mid-2000s.
+It is not a remake of any of them: the rules, numbers, levels, scoring and
+look are our own.
+
+This file says what the game is and how the code is shaped. ROADMAP.md says
+what gets built when. If the two disagree, fix one of them in the same change.
+
+## The name
+
+"Nice touch" is what the game calls out when the player makes a high-value or
+outrageous play. It comes from basketball: a shooter with a nice touch puts
+the right spin on the ball, so it kisses off the backboard or rolls around the
+rim and still drops, and you can see the rotation doing the work.
+
+That is the game's promise. Spin is real, it is visible, and good players
+have a nice touch.
+
+## Pillars
+
+1. **The swipe is the game, and spin is what it makes.** One verb: move the
+   paddle through the ball at contact. That puts spin on the ball. Spin bends
+   the flight and changes how the ball comes off a wall. Every feature must
+   make spin more interesting. A feature that distracts from it is cut.
+2. **Readable at speed.** The player can always tell where the ball is in
+   depth, where it will be, how it is spinning, and why they lost the point.
+3. **Earned, then broken.** Start as an honest skill game. Let a run's
+   upgrades escalate until the player is throwing shots that should not be
+   legal.
+4. **Opponents are characters.** Bosses have personalities and tells that can
+   be learned, in the spirit of Punch-Out. Losing to one teaches something.
+
+## The three layers
+
+Built in this order. Each layer ships playable before the next starts.
+
+1. **The core game.** A tunnel, a ball, two paddles and spin, with lives,
+   levels and scoring, at modern frame rates with modern feedback (sound, hit
+   pause, shake, trails). Tuned by feel in QA, not matched to another game.
+2. **The run.** A run is a ladder of opponents. After each win the player
+   drafts one of three upgrades (more spin, slower spin decay, wider paddle,
+   multiball, and so on). Lives carry across the run. Lose them all and the
+   run ends.
+3. **Bosses.** Every few rungs the opponent is a named character with a rule
+   of its own and a tell that reveals how to beat it.
+
+Arcade mode (layer 1 alone) stays in the game for good.
+
+## Out of scope
+
+- Online multiplayer.
+- Mobile and touch.
+- A level editor.
+- A browser build. C# Godot projects cannot export to the web in a stable
+  release, so the game is a Windows download.
+
+Reopening any of these is a roadmap decision, logged there.
+
+## Architecture
+
+Two parts with a hard wall between them.
+
+```
+src/NiceTouch.Sim/         Pure C# class library. No Godot references.
+                           All rules: ball, spin, paddles, opponent AI,
+                           scoring, run and upgrade logic. Tuning values too.
+src/NiceTouch.Sim.Tests/   xUnit tests for the sim.
+game/                      Godot 4 (.NET) project. Rendering, input, audio,
+                           UI, menus. Feeds input to the sim, draws its state.
+```
+
+Rules:
+
+- **The sim never knows it is being drawn.** It takes inputs and a tick, and
+  returns state. That is what makes it testable without launching the game.
+- **Deterministic on one machine.** Same build, same seed and same inputs give
+  the same match, every time, on the same computer. Randomness comes from one
+  seeded generator owned by the sim. Identical results across different
+  computers are not promised, because nothing planned needs them.
+- **Recorded inputs.** The game keeps the last 30 seconds of inputs and saves
+  them to a file on a key press. A recording plus the seed replays the match
+  exactly, which turns a QA bug report into a failing test.
+- **Time.** The sim advances 60 ticks a second, driven by Godot's built-in
+  fixed tick. Drawing smooths between ticks, so it looks right on any display.
+  Speeds are stored per second, never per tick. Values that fade (spin decay,
+  paddle smoothing) are stored as half-lives: "loses half its strength every
+  X seconds".
+- **One place for tuning.** Tuning values and level tables live in one C# file
+  in the sim until the run arrives (M3). When opponents and upgrades multiply
+  they move to data files, so adding one does not need a new class unless it
+  needs a new rule.
+- **Godot side stays thin.** No game rules in scene scripts. If a scene script
+  contains an `if` about scoring or physics, it is in the wrong place.
+- **A real 3D scene.** The tunnel is drawn with a normal perspective camera.
+  Depth comes from the camera, not from a scaling trick.
+- **Mouse by window fraction.** The cursor's position as a fraction of the
+  window maps onto the tunnel face, so the same swipe gives the same spin at
+  any resolution. The cursor is confined to the window during play.
+
+## Open questions
+
+Tracked in ROADMAP.md under "Decisions needed", not here.

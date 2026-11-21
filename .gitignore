@@ -1,0 +1,24 @@
+# Not ours: the original game and anything extracted from it
+*.swf
+*.fla
+docs/reference/
+
+# Godot
+.godot/
+.mono/
+*.translation
+export_credentials.cfg
+
+# C# / .NET
+bin/
+obj/
+*.user
+.vs/
+TestResults/
+
+# Local tool settings
+.claude/settings.local.json
+
+# OS
+Thumbs.db
+.DS_Store
