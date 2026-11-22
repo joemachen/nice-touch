@@ -32,7 +32,7 @@ The rules, each with sim tests written first:
 - [x] Placeholder opponent that chases and recentres
 - [x] The same inputs played twice give exactly the same rally
 - [x] Recording format, and replay of a recording in a test
-- [x] Gravity as a tuning value, zero by default (added after first QA)
+- [x] Gravity as a tuning value (added after first QA, starting at 7)
 
 The game around them:
 
@@ -125,3 +125,4 @@ In intended order. Details get written when each becomes Next.
 | 2026-11-21 | The recorder keeps every input since the rally session began. Replaces "the last 30 seconds" | Simpler and exact: a replay has to start from a known state |
 | 2026-11-21 | DESIGN.md gains a "Spin" section summarising the M1a rules | The centre of the game should be described in the design, not only in a milestone spec |
 | 2026-11-21 | Gravity added to M1a as a tuning value that starts at zero. Changes the approved spec | In first QA Joe found the ball floaty, "like it's missing some gravity". At zero nothing changes, so he can decide by feel whether it stays. If it does, up and down stop behaving like left and right, and DESIGN.md will say so |
+| 2026-11-21 | Gravity stays, with a starting value of 7. DESIGN.md gains a "Gravity" section | Joe tried it in QA and 7 "feels like good starting gravity". In scripted rallies at 7 the ball almost never lost its bounce, so no extra rule for lift is needed yet |

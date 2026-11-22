@@ -45,8 +45,8 @@ session. Newest first.
     next to `run.bat`, and shows the file name.
   - R restarts the rally. Esc quits.
   - Three placeholder beeps: paddle hit, wall bounce and miss.
-- After the first QA ("the ball feels floaty"), the tuning panel has a new
-  value, *Gravity*. It starts at 0, so the game plays exactly as before
-  until you raise it. With gravity the ball drops, arcs and bounces off the
-  floor. A ball that has lost its bounce rolls along the floor until a
-  paddle lifts it.
+- After the first QA ("the ball feels floaty"), the ball has gravity: it
+  drops, arcs and bounces off the floor. A ball that has lost its bounce
+  rolls along the floor until a paddle lifts it. The strength is a new value
+  in the tuning panel, *Gravity*, which starts at 7. Setting it to 0 gives
+  the old weightless flight.

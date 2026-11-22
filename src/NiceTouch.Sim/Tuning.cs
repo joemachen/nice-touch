@@ -49,9 +49,9 @@ public sealed record Tuning
     public float BasePace { get; set; } = 24;
 
     // How hard the ball is pulled towards the floor, in units per second
-    // gained each second. Zero is no gravity, which is how M1a was first
-    // built. It is here for Joe to try because the ball felt floaty.
-    public float Gravity { get; set; } = 0;
+    // gained each second. Without it the ball felt floaty. Zero switches
+    // it off.
+    public float Gravity { get; set; } = 7;
 
     // How long play stops after a miss before the ball is back on the
     // player's paddle.

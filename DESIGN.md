@@ -58,6 +58,14 @@ The full rules are in specs/M1a-the-rally.md. In short:
 Every one of these effects has a strength in the tuning values that can be
 turned down to zero.
 
+## Gravity
+
+The ball has a little weight. It is pulled gently towards the floor, so it
+arcs and bounces off the floor on its way down the tunnel, where top and
+back spin bite. A ball with no bounce left rolls. This makes up and down
+different from left and right: side spin plays off the side walls now and
+then, top and back spin play off the floor on most shots.
+
 ## The three layers
 
 Built in this order. Each layer ships playable before the next starts.
