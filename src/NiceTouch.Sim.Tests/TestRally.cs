@@ -16,6 +16,7 @@ internal static class TestRally
         SpinHalfLifeSeconds = 3,
         BallRadius = 0.5f,
         BasePace = 24,
+        Gravity = 0,
         WallGrip = 0.4f,
         WallSpinLoss = 0.4f,
         PaceMin = 0.6f,

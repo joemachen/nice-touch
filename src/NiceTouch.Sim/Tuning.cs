@@ -13,6 +13,12 @@ public sealed record Tuning
     public const int TicksPerSecond = 60;
     public const float TickSeconds = 1f / TicksPerSecond;
 
+    // Under gravity, a bounce that would have the ball back on the floor
+    // sooner than this is not a bounce: the ball rolls. Without it a ball
+    // that has lost its bounce patters on the floor many times a second.
+    // A rule, not a feel setting, so it is not in the tuning panel.
+    public const float ShortestBounceSeconds = 0.25f;
+
     private static readonly JsonSerializerOptions Readable = new() { WriteIndented = true };
 
     // As text, for copying out of the tuning panel and for remembering
@@ -41,6 +47,11 @@ public sealed record Tuning
 
     // Speed down the tunnel off a paddle. Only a wall bite changes it.
     public float BasePace { get; set; } = 24;
+
+    // How hard the ball is pulled towards the floor, in units per second
+    // gained each second. Zero is no gravity, which is how M1a was first
+    // built. It is here for Joe to try because the ball felt floaty.
+    public float Gravity { get; set; } = 0;
 
     // How long play stops after a miss before the ball is back on the
     // player's paddle.

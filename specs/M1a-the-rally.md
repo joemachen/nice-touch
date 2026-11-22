@@ -57,6 +57,15 @@ visible, and it rotates exactly as fast as the spin it carries.
   bounces off the four walls.
 - **Pace.** The ball travels down the tunnel at one set speed. Only a wall
   bite changes it, and the next paddle hit puts it back.
+- **Gravity.** Added on 2026-11-21 after the first QA, because the ball
+  felt floaty. A tuning value pulls the ball towards the floor. It starts at
+  zero, which is no gravity, so nothing changes until it is turned up in the
+  panel. The ball bounces off the floor without losing height, and top or
+  back spin bites the floor as it does any wall. A ball with too little
+  bounce left to stay in the air for a quarter of a second rolls along the
+  floor instead, silently and without a bite, until a paddle lifts it.
+  Gravity does not touch a ball waiting on the paddle. Whether it stays, and
+  at what strength, is decided by feel.
 - **Your paddle.** It follows the mouse almost instantly, with a touch of
   smoothing, and stays inside the tunnel. The mouse cursor is hidden and kept
   inside the window during play. The paddle's position follows the cursor's
@@ -110,6 +119,9 @@ Every rule above gets a sim test, written first. Among them:
 - A ball with no spin flies straight and bounces cleanly.
 - Spin curves the ball the right way, on the way out and on the way back.
 - Spin halves in the stated time.
+- Gravity pulls the ball down, a dropped ball bounces back to the height it
+  fell from, a ball too slow to bounce rolls, and with gravity at zero the
+  ball does not drop.
 - A wall bite speeds the ball up or slows it down, and never past the
   limits.
 - A faster swipe makes more spin, up to the cap.

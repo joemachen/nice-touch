@@ -126,7 +126,26 @@ public sealed class Match
         float bend = Tuning.SpinCurve * v.Z * MathF.Abs(v.Z) * Dt;
         v.X += BallSpin.Y * bend;
         v.Y -= BallSpin.X * bend;
+
+        // Gravity works by time, not by distance, so unlike the bend a
+        // faster ball flies flatter. Half is applied before the ball moves
+        // and half after, which keeps a bounce off the floor from losing
+        // or gaining height tick by tick.
+        float halfPull = Tuning.Gravity * Dt / 2;
+        v.Y -= halfPull;
         BallVelocity = v;
+
+        Move();
+
+        if (Phase == Phase.Rally)
+            BallVelocity -= new Vector3(0, halfPull, 0);
+    }
+
+    // Moves the ball for one tick, stopping on the way to deal with a
+    // paddle or a miss if it reaches an end of the tunnel.
+    private void Move()
+    {
+        Vector3 v = BallVelocity;
 
         // Work out exactly when the ball reaches the end of the tunnel it
         // is heading for, so a fast ball cannot slip through a paddle.
@@ -200,7 +219,18 @@ public sealed class Match
         Vector3 p = BallPosition + BallVelocity * seconds;
         Vector3 v = BallVelocity;
         int fromSide = Reflect(ref p.X, ref v.X, Tuning.TunnelWidth / 2 - Tuning.BallRadius);
-        int fromFloor = Reflect(ref p.Y, ref v.Y, Tuning.TunnelHeight / 2 - Tuning.BallRadius);
+        float floorReach = MathF.Max(Tuning.TunnelHeight / 2 - Tuning.BallRadius, 0);
+        int fromFloor = Reflect(ref p.Y, ref v.Y, floorReach);
+
+        // Under gravity a ball with too little bounce left rolls along the
+        // floor instead: no bounce, no bite, and nothing to hear.
+        if (fromFloor == 1 && v.Y < Tuning.Gravity * Tuning.ShortestBounceSeconds / 2)
+        {
+            p.Y = -floorReach;
+            v.Y = 0;
+            fromFloor = 0;
+        }
+
         BallPosition = p;
         BallVelocity = v;
 
