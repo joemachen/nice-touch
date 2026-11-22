@@ -37,7 +37,7 @@ public sealed record Tuning
     public float PaddleHalfLifeSeconds { get; set; } = 0.01f;
 
     // How fast the opponent's paddle can move. This is how quickly it reacts.
-    public float OpponentSpeed { get; set; } = 9;
+    public float OpponentSpeed { get; set; } = 5;
 
     // Speed down the tunnel off a paddle. Only a wall bite changes it.
     public float BasePace { get; set; } = 24;
@@ -53,7 +53,7 @@ public sealed record Tuning
     public float MaxSpin { get; set; } = 40;
 
     // The share of the paddle's sideways speed that the ball leaves with.
-    public float SwipePush { get; set; } = 0.25f;
+    public float SwipePush { get; set; } = 0.35f;
 
     // The shares of its sideways speed and of its spin that the ball keeps
     // through a paddle hit.
@@ -67,7 +67,7 @@ public sealed record Tuning
     // How sharply spin bends the path. The curvature of the path is this
     // times the spin, whatever the pace, so a faster ball follows the same
     // curve. Zero switches the bend off.
-    public float SpinCurve { get; set; } = 0.001f;
+    public float SpinCurve { get; set; } = 0.0012f;
 
     // Spin loses half its strength in this many seconds.
     public float SpinHalfLifeSeconds { get; set; } = 3;
