@@ -59,3 +59,37 @@ session. Newest first.
   Next is M1b, which turns the rally into a game with lives, levels and a
   score. Its spec is written and waiting for approval. Nothing new to play
   from it yet.
+- Milestone M1b (the game) is built and waiting for QA. The rally is now a
+  game you can win and lose:
+  - A line near the top always shows your score, the level, your lives and
+    the opponent's lives.
+  - You start on level 1 with 5 lives. Each opponent has 3. A miss costs
+    whoever missed one life.
+  - Take the opponent's last life and the screen says LEVEL 1 CLEAR. You get
+    one life back (never more than 5) and a bonus, and after a second
+    LEVEL 2 starts with you to serve. Each level the opponent moves a
+    little quicker and the ball travels a little faster. There are 6.
+  - Lose your last life and it is GAME OVER, with your score and the level
+    you reached. Clear level 6 and it is YOU WIN. After either, wait a
+    second and one click starts a new game.
+  - You only score by making the opponent miss. After every winner the
+    screen shows what it paid as a sum: the winner itself, the length of
+    the rally, *bend* (how far spin carried the shot off a straight line),
+    *kick* (each wall or floor bounce that sped it up), the level, and the
+    total. Later levels multiply it.
+  - When bend and kick together reach a mark, the screen calls NICE TOUCH
+    in gold, there is a new high beep, and those style points count
+    double.
+  - R now starts a new game. F9 now saves the game in hand, from its first
+    serve, as `game-<date>-<time>.json`, with the score, lives and level it
+    had reached.
+  - Twelve new values at the bottom of the tuning panel (scroll down):
+    lives for each side, lives back, the number of levels, how much quicker
+    each level gets, every points value, the NICE TOUCH mark and the level
+    bonus. Changing one restarts the game. Your remembered values from M1a
+    are kept and the new ones start at their defaults.
+  - Messages on screen now have a dark outline so they read over the
+    tunnel's lines.
+- Known before QA: with the starting numbers NICE TOUCH comes up on nearly
+  every swiped winner. *Nice touch mark* is 100, and about 250 looks nearer
+  the intent. It has been left at the approved number for Joe to judge.

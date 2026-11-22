@@ -20,6 +20,8 @@ Goal: the rally becomes a game you can win and lose.
 
 Spec: specs/M1b-the-game.md, approved by Joe on 2026-11-21.
 
+Status: built on 2026-11-21 and waiting for Joe's QA. Not signed off.
+
 - [x] The rally reports two facts about the shot in flight: how far spin has
       bent it and how many wall or floor bites have sped it up
 - [x] Tuning values for lives, levels, the two level steps, every points
@@ -32,8 +34,8 @@ Spec: specs/M1b-the-game.md, approved by Joe on 2026-11-21.
 - [x] On screen: score, level and both sides' lives, LEVEL n, the points
       breakdown, NICE TOUCH with its beep, LEVEL CLEAR, GAME OVER, YOU WIN
 - [x] The new values join the tuning panel
-- [ ] Scripted games played at every level, with the numbers reported to Joe
-- [ ] QA handoff to Joe
+- [x] Scripted games played at every level, with the numbers reported to Joe
+- [x] QA handoff to Joe
 
 Exit test: `test.bat` ends with PASS and CI is green, Joe saves a recording
 of a whole game that replays in a test to the same final score, and he
@@ -76,6 +78,11 @@ In intended order. Details get written when each becomes Next.
 
 ## Decisions needed
 
+- [ ] The NICE TOUCH mark. At the spec's 100 style points it was called on
+      about nine winners in ten in scripted games, because a swiped winner
+      usually bends 12 to 17 units and kicks once. About 250 would call it
+      on roughly one winner in eight. Joe to set it by feel in M1b QA
+      (*Nice touch mark* in the tuning panel).
 - [ ] Final name. "Nice Touch" is still a working title, though it now has a
       reason behind it (see DESIGN.md, "The name").
 - [ ] License for this repo (none chosen yet, so all rights reserved for now)
@@ -120,3 +127,7 @@ In intended order. Details get written when each becomes Next.
 | 2026-11-21 | Five lives, with one back for each level cleared | No lives back allowed 5 misses across about 18 winners, which looked too harsh against Joe's recording. Refilling every level looked too soft. All three numbers are tuning values |
 | 2026-11-21 | Six levels with an ending (YOU WIN), not an endless score chase | An ending answers "can I win". Endless escalation belongs to the run (M3) |
 | 2026-11-21 | DESIGN.md gains a "Scoring" section | The spec promised it, and scoring is where the game says what it values |
+| 2026-11-21 | Bend is measured as how far spin alone has moved the ball since the last paddle hit, in an account gravity and the walls never enter. Part of a unit pays its share | The spec asked for bend that leaves out gravity's drop. Counting through wall bounces means curving into a wall for the kick does not cost bend, so it can read more than the tunnel is wide |
+| 2026-11-21 | An ended game ignores clicks until the one-second pause after the last miss is over, then one click starts a new game | Without it a player clicking to serve again would click straight past GAME OVER |
+| 2026-11-21 | A recording is one game: the recorder starts again when a new game starts | The spec says F9 records the whole game from its start. It also keeps files small over a long sitting |
+| 2026-11-21 | The lives given back for a cleared level are a tuning value too (*Lives back*) | The spec counts it among the numbers Joe can change |
