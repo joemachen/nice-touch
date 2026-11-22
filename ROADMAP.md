@@ -18,8 +18,36 @@ Last updated: 2026-11-21
 
 Goal: find out whether the swipe feels good, as early as possible.
 
-Spec: specs/M1a-the-rally.md (awaiting Joe's approval). The task list is
-written here once the spec is approved.
+Spec: specs/M1a-the-rally.md (approved by Joe, 2026-11-21).
+
+The rules, each with sim tests written first:
+
+- [ ] Tuning values become one object with defaults, still in one file
+- [ ] Flight: spin bends the path, spin fades by a half-life
+- [ ] Walls: clean bounce with no spin, and the spin bite inside pace limits
+- [ ] Paddles: the player's paddle follows its target, hit or miss is decided
+      where the ball crossed, the swipe makes spin and pushes, and spin
+      bites the paddle
+- [ ] Serve from the paddle, and the miss, pause and return to serve
+- [ ] Placeholder opponent that chases and recentres
+- [ ] The same inputs played twice give exactly the same rally
+- [ ] Recording format, and replay of a recording in a test
+
+The game around them:
+
+- [ ] Ball with a two-tone spin pattern, both paddles and the floor marker,
+      drawn smoothly between ticks
+- [ ] Mouse moves the paddle, click serves, cursor hidden and kept in the
+      window; R restarts, Esc quits
+- [ ] Debug line, miss message and the "CUSTOM TUNING" notice
+- [ ] Tuning panel on F1, with values remembered between runs
+- [ ] F9 saves a recording to `recordings/`
+- [ ] Three placeholder beeps made in code
+
+Sign-off:
+
+- [ ] Joe saves a recording and it replays exactly in a test
+- [ ] Joe answers yes to every item on the feel checklist
 
 Exit test: sim tests green, and Joe can rally, bend shots, and answer yes to
 every item on the feel checklist in the M1a spec.
@@ -90,3 +118,8 @@ In intended order. Details get written when each becomes Next.
 | 2026-11-21 | Working agreement: changelog once per session, failing-test rule for sim bugs only, warnings fail the sim build, straight to main, QA handoff names the commit, bug report format, asset credits | See CLAUDE.md. Each removes noise or closes a gap found in the plan review |
 | 2026-11-21 | The projects target .NET 10 | .NET 8 went out of support this month, and Godot 4.7.1 builds and runs the game on .NET 10 |
 | 2026-11-21 | CI runs on Windows and calls `test.bat` | One definition of green, shared by Joe's machine and GitHub |
+| 2026-11-21 | M1a spec approved. Spin is a physical model: besides bending the flight it changes how the ball comes off a wall and makes it jump off a still paddle | It gives a player with a nice touch more to do than bend shots. Every effect can be turned down to zero in the tuning panel, so the simple version is one setting away |
+| 2026-11-21 | The serve is from the paddle: the ball rides on it until the click | The player can serve from anywhere in the tunnel, with a swipe |
+| 2026-11-21 | Tuning values are remembered between runs in a local file that is not committed. The screen shows "CUSTOM TUNING" while any value differs from the defaults | Tuning takes several sittings. The notice stops stale values passing unnoticed |
+| 2026-11-21 | The recorder keeps every input since the rally session began. Replaces "the last 30 seconds" | Simpler and exact: a replay has to start from a known state |
+| 2026-11-21 | DESIGN.md gains a "Spin" section summarising the M1a rules | The centre of the game should be described in the design, not only in a milestone spec |

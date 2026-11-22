@@ -1,6 +1,6 @@
 # M1a: the rally
 
-Status: **draft, awaiting Joe's approval.** No code is written until approved.
+Status: **approved by Joe, 2026-11-21**, including the three flagged choices.
 
 ## Goal
 

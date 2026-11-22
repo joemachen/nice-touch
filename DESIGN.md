@@ -34,6 +34,30 @@ have a nice touch.
 4. **Opponents are characters.** Bosses have personalities and tells that can
    be learned, in the spirit of Punch-Out. Losing to one teaches something.
 
+## Spin
+
+The full rules are in specs/M1a-the-rally.md. In short:
+
+- The ball carries two kinds of spin: side spin, and top spin (back spin is
+  top spin the other way round). Spin is a real quantity the ball has, and
+  the ball on screen rotates exactly that fast.
+- **The swipe makes it.** A paddle's sideways speed at contact rubs spin onto
+  the ball, up to a cap, and also pushes the ball a little the same way. So
+  a swipe to the right sends the ball right and the spin bends it back left.
+- **It bends the flight**, all the way down the tunnel. A faster ball follows
+  the same shaped curve and just gets there sooner.
+- **It fades**, by a half-life.
+- **It bites the walls.** A ball with no spin bounces cleanly. A ball that
+  curved into the wall comes off faster down the tunnel. One spinning the
+  other way checks up and comes off slower. The bite uses up some spin, and
+  the speed change lasts until the next paddle hit, inside set limits.
+- **It bites the paddles.** A spinning ball jumps sideways off a still paddle
+  and keeps part of its spin, so returning heavy spin cleanly means swiping
+  against it. The rule is the same for the player and the opponent.
+
+Every one of these effects has a strength in the tuning values that can be
+turned down to zero.
+
 ## The three layers
 
 Built in this order. Each layer ships playable before the next starts.
@@ -81,9 +105,10 @@ Rules:
   the same match, every time, on the same computer. Randomness comes from one
   seeded generator owned by the sim. Identical results across different
   computers are not promised, because nothing planned needs them.
-- **Recorded inputs.** The game keeps the last 30 seconds of inputs and saves
-  them to a file on a key press. A recording plus the seed replays the match
-  exactly, which turns a QA bug report into a failing test.
+- **Recorded inputs.** The game records every input since the rally session
+  began and saves it to a file on a key press, with the tuning values in use.
+  A recording (plus the seed, once there is one) replays the match exactly,
+  which turns a QA bug report into a failing test.
 - **Time.** The sim advances 60 ticks a second, driven by Godot's built-in
   fixed tick. Drawing smooths between ticks, so it looks right on any display.
   Speeds are stored per second, never per tick. Values that fade (spin decay,
