@@ -15,4 +15,12 @@ public sealed record Tuning
     public float TunnelWidth { get; set; } = 12;
     public float TunnelHeight { get; set; } = 8;
     public float TunnelDepth { get; set; } = 30;
+
+    // How sharply spin bends the path. The curvature of the path is this
+    // times the spin, whatever the pace, so a faster ball follows the same
+    // curve. Zero switches the bend off.
+    public float SpinCurve { get; set; } = 0.001f;
+
+    // Spin loses half its strength in this many seconds.
+    public float SpinHalfLifeSeconds { get; set; } = 3;
 }
