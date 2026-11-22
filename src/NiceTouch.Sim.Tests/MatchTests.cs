@@ -8,7 +8,7 @@ public class MatchTests
     public void Step_moves_the_ball_by_its_speed_for_one_tick()
     {
         // Speeds are per second, so one tick moves the ball 1/60 of them.
-        var match = new Match(new Tuning())
+        var match = new Match(TestRally.Tuning())
         {
             BallPosition = new Vector3(1, 2, 3),
             BallVelocity = new Vector3(60, -120, 30),

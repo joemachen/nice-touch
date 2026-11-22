@@ -29,7 +29,7 @@ The rules, each with sim tests written first:
       where the ball crossed, the swipe makes spin and pushes, and spin
       bites the paddle
 - [ ] Serve from the paddle, and the miss, pause and return to serve
-- [ ] Placeholder opponent that chases and recentres
+- [x] Placeholder opponent that chases and recentres
 - [ ] The same inputs played twice give exactly the same rally
 - [ ] Recording format, and replay of a recording in a test
 

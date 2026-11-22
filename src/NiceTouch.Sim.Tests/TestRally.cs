@@ -20,6 +20,10 @@ internal static class TestRally
         WallSpinLoss = 0.4f,
         PaceMin = 0.6f,
         PaceMax = 1.6f,
+        PaddleWidth = 3,
+        PaddleHeight = 2,
+        PaddleHalfLifeSeconds = 0.01f,
+        OpponentSpeed = 9,
     };
 
     // A ball already in flight.
@@ -31,9 +35,12 @@ internal static class TestRally
             BallSpin = spin,
         };
 
-    public static void Run(this Match match, int ticks)
+    // Steps with the mouse held still at one spot and no click.
+    public static void Run(this Match match, int ticks, Vector2 paddleTarget = default)
     {
         for (int i = 0; i < ticks; i++)
-            match.Step();
+            match.Step(new TickInput(paddleTarget, Serve: false));
     }
+
+    public static void Step(this Match match) => match.Run(1);
 }

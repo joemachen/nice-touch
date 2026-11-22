@@ -18,6 +18,17 @@ public sealed record Tuning
 
     public float BallRadius { get; set; } = 0.5f;
 
+    // Both paddles are the same size.
+    public float PaddleWidth { get; set; } = 3;
+    public float PaddleHeight { get; set; } = 2;
+
+    // The player's paddle closes half the gap to the mouse in this many
+    // seconds. Zero means no smoothing at all.
+    public float PaddleHalfLifeSeconds { get; set; } = 0.01f;
+
+    // How fast the opponent's paddle can move. This is how quickly it reacts.
+    public float OpponentSpeed { get; set; } = 9;
+
     // Speed down the tunnel off a paddle. Only a wall bite changes it.
     public float BasePace { get; set; } = 24;
 

@@ -26,7 +26,7 @@ public partial class Main : Node3D
         FitCameraToTunnelFace();
     }
 
-    public override void _PhysicsProcess(double delta) => _match.Step();
+    public override void _PhysicsProcess(double delta) => _match.Step(default);
 
     public override void _Process(double delta) => _tickLabel.Text = $"sim tick {_match.Tick}";
 

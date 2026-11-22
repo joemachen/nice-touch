@@ -27,11 +27,48 @@ public sealed class Match
     // What happened during the latest tick, for sound and effects.
     public TickEvents Events { get; private set; }
 
-    public void Step()
+    // Paddle centres, as x and y on each paddle's end of the tunnel, and
+    // their speeds in units per second measured over the latest tick.
+    public Vector2 PlayerPaddle { get; internal set; }
+    public Vector2 PlayerPaddleVelocity { get; private set; }
+    public Vector2 OpponentPaddle { get; internal set; }
+    public Vector2 OpponentPaddleVelocity { get; private set; }
+
+    public void Step(TickInput input)
     {
         Events = TickEvents.None;
+        MovePaddles(input.PaddleTarget);
         Fly();
         Tick++;
+    }
+
+    private void MovePaddles(Vector2 playerTarget)
+    {
+        // The player's paddle follows the mouse with a touch of smoothing.
+        float closed = 1 - Remaining(Tuning.PaddleHalfLifeSeconds);
+        Vector2 player = Vector2.Lerp(PlayerPaddle, InsideTunnel(playerTarget), closed);
+        PlayerPaddleVelocity = (player - PlayerPaddle) / Dt;
+        PlayerPaddle = player;
+
+        // The opponent chases the ball while it is coming, and drifts back
+        // to the centre otherwise, at one speed.
+        bool ballIsComing = BallVelocity.Z > 0;
+        Vector2 goal = InsideTunnel(ballIsComing ? new Vector2(BallPosition.X, BallPosition.Y) : Vector2.Zero);
+        Vector2 gap = goal - OpponentPaddle;
+        float reach = Tuning.OpponentSpeed * Dt;
+        Vector2 opponent = gap.Length() <= reach ? goal : OpponentPaddle + Vector2.Normalize(gap) * reach;
+        OpponentPaddleVelocity = (opponent - OpponentPaddle) / Dt;
+        OpponentPaddle = opponent;
+    }
+
+    // The nearest place a paddle's centre can be with its edges inside the
+    // walls.
+    private Vector2 InsideTunnel(Vector2 centre)
+    {
+        var limit = Vector2.Max(Vector2.Zero, new Vector2(
+            (Tuning.TunnelWidth - Tuning.PaddleWidth) / 2,
+            (Tuning.TunnelHeight - Tuning.PaddleHeight) / 2));
+        return Vector2.Clamp(centre, -limit, limit);
     }
 
     private void Fly()
