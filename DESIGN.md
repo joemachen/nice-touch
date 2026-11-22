@@ -132,10 +132,11 @@ Rules:
   the same match, every time, on the same computer. Randomness comes from one
   seeded generator owned by the sim. Identical results across different
   computers are not promised, because nothing planned needs them.
-- **Recorded inputs.** The game records every input since the rally session
-  began and saves it to a file on a key press, with the tuning values in use.
-  A recording (plus the seed, once there is one) replays the match exactly,
-  which turns a QA bug report into a failing test.
+- **Recorded inputs.** The game records every input since the game in hand
+  began and saves it to a file on a key press, with the tuning values in use
+  and the score, lives and level reached. A recording (plus the seed, once
+  there is one) replays the game exactly, which turns a QA bug report into a
+  failing test.
 - **Time.** The sim advances 60 ticks a second, driven by Godot's built-in
   fixed tick. Drawing smooths between ticks, so it looks right on any display.
   Speeds are stored per second, never per tick. Values that fade (spin decay,
