@@ -14,46 +14,7 @@ A living document. It is updated in the same commit as the work it describes.
 
 Last updated: 2026-11-21
 
-## Now: M1a, the rally
-
-Goal: find out whether the swipe feels good, as early as possible.
-
-Spec: specs/M1a-the-rally.md (approved by Joe, 2026-11-21).
-
-The rules, each with sim tests written first:
-
-- [x] Tuning values become one object with defaults, still in one file
-- [x] Flight: spin bends the path, spin fades by a half-life
-- [x] Walls: clean bounce with no spin, and the spin bite inside pace limits
-- [x] Paddles: the player's paddle follows its target, hit or miss is decided
-      where the ball crossed, the swipe makes spin and pushes, and spin
-      bites the paddle
-- [x] Serve from the paddle, and the miss, pause and return to serve
-- [x] Placeholder opponent that chases and recentres
-- [x] The same inputs played twice give exactly the same rally
-- [x] Recording format, and replay of a recording in a test
-- [x] Gravity as a tuning value (added after first QA, starting at 7)
-
-The game around them:
-
-- [x] Ball with a two-tone spin pattern, both paddles and the floor marker,
-      drawn smoothly between ticks
-- [x] Mouse moves the paddle, click serves, cursor hidden and kept in the
-      window; R restarts, Esc quits
-- [x] Debug line, miss message and the "CUSTOM TUNING" notice
-- [x] Tuning panel on F1, with values remembered between runs
-- [x] F9 saves a recording to `recordings/`
-- [x] Three placeholder beeps made in code
-
-Sign-off:
-
-- [x] Joe saves a recording and it replays exactly in a test
-- [ ] Joe answers yes to every item on the feel checklist
-
-Exit test: sim tests green, and Joe can rally, bend shots, and answer yes to
-every item on the feel checklist in the M1a spec.
-
-## Next: M1b, the game
+## Now: M1b, the game
 
 Goal: the rally becomes a game you can win and lose.
 
@@ -61,16 +22,26 @@ Goal: the rally becomes a game you can win and lose.
   restart
 - The "Nice touch" call-out for big plays
 
+Spec: not written yet. It comes first, for Joe's approval, and the task list
+is written here once it is approved.
+
 Exit test: written in the M1b spec.
+
+## Next: M2, juice and shell
+
+Goal: the game feels and sounds finished enough to hand to someone else.
+
+- Hit pause, shake, trails, real sound, menus, settings, local high scores
+- Windows export and a release pipeline
+- Ends with the first build shared with outside players (v0.1) as a quiet
+  playtest on an unlisted page, not a launch
+
+Exit test: written in the M2 spec.
 
 ## Later
 
 In intended order. Details get written when each becomes Next.
 
-- **M2, juice and shell.** Hit pause, shake, trails, real sound, menus,
-  settings, local high scores. Windows export and a release pipeline. Ends
-  with the first build shared with outside players (v0.1) as a quiet playtest
-  on an unlisted page, not a launch.
 - **M3, the run.** Opponent ladder, upgrade drafts, seeded runs, carry-over
   lives. The first run is capped at a small fixed set (about 8 upgrades and
   5 opponents). First balance pass from playtest feedback. Tuning moves to
@@ -84,6 +55,12 @@ In intended order. Details get written when each becomes Next.
 - **M0, foundation.** Signed off by Joe on 2026-11-21. The game builds, tests
   and runs with one command each, and CI runs the same checks on every push.
   Spec: specs/M0-foundation.md.
+- **M1a, the rally.** Signed off by Joe on 2026-11-21. You can serve, rally
+  against a placeholder opponent and put spin on the ball, with a tuning
+  panel and an input recorder. Joe answered yes to all nine items on the
+  feel checklist, and his saved recording replays exactly in a test. Gravity
+  was added during QA and his tuning became the defaults (gravity 7, swipe
+  spin 2). Spec: specs/M1a-the-rally.md.
 
 ## Decisions needed
 

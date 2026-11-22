@@ -4,10 +4,10 @@ Working title. An original 3D tunnel pong game about spin: swipe the paddle
 through the ball to bend the shot. It will grow into a roguelike run with boss
 opponents.
 
-**Status:** the rally (milestone M1a) is built and in QA. You can serve,
+**Status:** the rally (milestone M1a) is built and signed off. You can serve,
 rally against a placeholder opponent and put spin on the ball. There is no
-score, no lives and no levels yet. See [ROADMAP.md](ROADMAP.md) for what is
-being built now.
+score, no lives and no levels yet: those are the next milestone, M1b. See
+[ROADMAP.md](ROADMAP.md) for what is being built now.
 
 ## Run it
 

@@ -55,3 +55,6 @@ session. Newest first.
 - The same swipe now puts twice as much spin on the ball (*Swipe spin* is 2
   by default, from Joe's tuning), so the cap is reached with a gentler
   swipe.
+- Milestone M1a is signed off: every item on the feel checklist is a yes.
+  Next is M1b, which turns the rally into a game with lives, levels and a
+  score. Nothing new to play from that yet.

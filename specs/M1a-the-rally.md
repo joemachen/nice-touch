@@ -1,6 +1,7 @@
 # M1a: the rally
 
 Status: **approved by Joe, 2026-11-21**, including the three flagged choices.
+Built and **signed off by Joe on 2026-11-21**.
 
 ## Goal
 
