@@ -1,17 +1,23 @@
 using Godot;
 using NiceTouch.Sim;
+using Side = NiceTouch.Sim.Side;
 
 namespace NiceTouch;
 
-// Draws the sim and feeds it ticks. No game rules live here.
+// Feeds the sim its input and ticks, and shows what it reports. No game
+// rules live here.
 public partial class Main : Node3D
 {
-    private const int Rings = 7;
     private const float FitMargin = 1.1f;
 
-    private readonly Match _match = new(new Tuning());
+    private readonly RallyView _view = new();
+    private readonly Label _debugLine = new();
+    private readonly Label _message = new();
+
+    private Tuning _tuning = new();
+    private Match _match = null!;
     private Camera3D _camera = null!;
-    private Label _tickLabel = null!;
+    private bool _serveClicked;
 
     public override void _Ready()
     {
@@ -19,19 +25,94 @@ public partial class Main : Node3D
         Engine.PhysicsTicksPerSecond = Tuning.TicksPerSecond;
 
         _camera = GetNode<Camera3D>("Camera");
-        _tickLabel = GetNode<Label>("Hud/TickLabel");
-        GetNode<MeshInstance3D>("Tunnel").Mesh = BuildTunnelMesh(_match.Tuning);
+        AddChild(_view);
+        BuildHud();
 
         GetViewport().SizeChanged += FitCameraToTunnelFace;
+        Input.MouseMode = Input.MouseModeEnum.ConfinedHidden;
+        StartRally();
+    }
+
+    // A new rally session: a fresh match waiting for the serve.
+    private void StartRally()
+    {
+        _match = new Match(_tuning);
+        _serveClicked = false;
+        _view.Reset(_match);
         FitCameraToTunnelFace();
     }
 
-    public override void _PhysicsProcess(double delta) => _match.Step(default);
+    public override void _PhysicsProcess(double delta)
+    {
+        // The mouse is read once per sim tick. Its position as a fraction
+        // of the window maps onto the tunnel face.
+        Vector2 window = GetViewport().GetVisibleRect().Size;
+        Vector2 mouse = GetViewport().GetMousePosition() / window;
+        var target = new System.Numerics.Vector2(
+            (mouse.X - 0.5f) * _tuning.TunnelWidth,
+            (0.5f - mouse.Y) * _tuning.TunnelHeight);
 
-    public override void _Process(double delta) => _tickLabel.Text = $"sim tick {_match.Tick}";
+        _match.Step(new TickInput(target, _serveClicked));
+        _serveClicked = false;
+        _view.Take(_match);
+    }
+
+    public override void _Process(double delta)
+    {
+        _debugLine.Text =
+            $"spin: side {_match.BallSpin.Y:0.0}, top {_match.BallSpin.X:0.0}    " +
+            $"pace: {Mathf.Abs(_match.BallVelocity.Z):0.0}    rally: {_match.RallyLength}";
+
+        _message.Text = _match.Phase switch
+        {
+            Phase.PointOver when _match.LastMiss == Side.Player => "YOU MISSED",
+            Phase.PointOver => "OPPONENT MISSED",
+            Phase.Serving => "Click to serve",
+            _ => "",
+        };
+    }
+
+    public override void _UnhandledInput(InputEvent @event)
+    {
+        if (@event is InputEventMouseButton { Pressed: true, ButtonIndex: MouseButton.Left })
+            _serveClicked = true;
+
+        if (@event is not InputEventKey { Pressed: true, Echo: false } key)
+            return;
+
+        switch (key.Keycode)
+        {
+            case Key.R:
+                StartRally();
+                break;
+            case Key.Escape:
+                GetTree().Quit();
+                break;
+        }
+    }
 
     // The boot smoke test in test.bat reads this line.
     public override void _ExitTree() => GD.Print($"sim ticks at exit: {_match.Tick}");
+
+    private void BuildHud()
+    {
+        var hud = new CanvasLayer();
+        AddChild(hud);
+
+        Place(hud, _debugLine, Control.LayoutPreset.TopLeft, fontSize: 18);
+        // Low on the screen, clear of the far end of the tunnel.
+        Place(hud, _message, Control.LayoutPreset.CenterBottom, fontSize: 36);
+        _message.GrowHorizontal = Control.GrowDirection.Both;
+        _message.GrowVertical = Control.GrowDirection.Begin;
+    }
+
+    private static void Place(CanvasLayer hud, Label label, Control.LayoutPreset where, int fontSize)
+    {
+        label.MouseFilter = Control.MouseFilterEnum.Ignore;
+        label.AddThemeFontSizeOverride("font_size", fontSize);
+        hud.AddChild(label);
+        label.SetAnchorsAndOffsetsPreset(where, Control.LayoutPresetMode.Minsize, 14);
+    }
 
     // Pulls the camera back until the whole near face of the tunnel fits,
     // whatever shape the window is.
@@ -43,44 +124,7 @@ public partial class Main : Node3D
 
         float tanY = Mathf.Tan(Mathf.DegToRad(_camera.Fov) / 2);
         float tanX = tanY * size.X / size.Y;
-        Tuning tuning = _match.Tuning;
-        float distance = Mathf.Max(tuning.TunnelHeight / 2 / tanY, tuning.TunnelWidth / 2 / tanX);
+        float distance = Mathf.Max(_tuning.TunnelHeight / 2 / tanY, _tuning.TunnelWidth / 2 / tanX);
         _camera.Position = new Vector3(0, 0, distance * FitMargin);
-    }
-
-    // A wireframe: rectangles at even depths, joined along the four corners.
-    // The player's end is at z = 0 and the tunnel runs away along -z.
-    private static ImmediateMesh BuildTunnelMesh(Tuning tuning)
-    {
-        float w = tuning.TunnelWidth / 2;
-        float h = tuning.TunnelHeight / 2;
-        Vector2[] corners = [new(-w, -h), new(w, -h), new(w, h), new(-w, h)];
-
-        var material = new StandardMaterial3D
-        {
-            ShadingMode = BaseMaterial3D.ShadingModeEnum.Unshaded,
-            AlbedoColor = new Color(0.35f, 0.9f, 0.6f),
-        };
-
-        var mesh = new ImmediateMesh();
-        mesh.SurfaceBegin(Mesh.PrimitiveType.Lines, material);
-        for (int ring = 0; ring < Rings; ring++)
-        {
-            float z = -tuning.TunnelDepth * ring / (Rings - 1);
-            for (int i = 0; i < corners.Length; i++)
-            {
-                Vector2 a = corners[i];
-                Vector2 b = corners[(i + 1) % corners.Length];
-                mesh.SurfaceAddVertex(new Vector3(a.X, a.Y, z));
-                mesh.SurfaceAddVertex(new Vector3(b.X, b.Y, z));
-            }
-        }
-        foreach (Vector2 c in corners)
-        {
-            mesh.SurfaceAddVertex(new Vector3(c.X, c.Y, 0));
-            mesh.SurfaceAddVertex(new Vector3(c.X, c.Y, -tuning.TunnelDepth));
-        }
-        mesh.SurfaceEnd();
-        return mesh;
     }
 }

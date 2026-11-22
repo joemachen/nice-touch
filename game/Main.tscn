@@ -6,12 +6,4 @@
 script = ExtResource("1")
 
 [node name="Camera" type="Camera3D" parent="."]
-
-[node name="Tunnel" type="MeshInstance3D" parent="."]
-
-[node name="Hud" type="CanvasLayer" parent="."]
-
-[node name="TickLabel" type="Label" parent="Hud"]
-offset_left = 12.0
-offset_top = 8.0
-text = "sim tick 0"
+fov = 40.0

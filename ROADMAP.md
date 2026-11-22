@@ -35,9 +35,9 @@ The rules, each with sim tests written first:
 
 The game around them:
 
-- [ ] Ball with a two-tone spin pattern, both paddles and the floor marker,
+- [x] Ball with a two-tone spin pattern, both paddles and the floor marker,
       drawn smoothly between ticks
-- [ ] Mouse moves the paddle, click serves, cursor hidden and kept in the
+- [x] Mouse moves the paddle, click serves, cursor hidden and kept in the
       window; R restarts, Esc quits
 - [ ] Debug line, miss message and the "CUSTOM TUNING" notice
 - [ ] Tuning panel on F1, with values remembered between runs
