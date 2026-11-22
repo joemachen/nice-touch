@@ -24,6 +24,12 @@ public sealed class Match
     // no spin about the depth axis.
     public Vector2 BallSpin { get; internal set; }
 
+    // Paddle hits since the serve.
+    public int RallyLength { get; private set; }
+
+    // Who missed most recently, if anyone has yet.
+    public Side? LastMiss { get; private set; }
+
     // What happened during the latest tick, for sound and effects.
     public TickEvents Events { get; private set; }
 
@@ -84,7 +90,66 @@ public sealed class Match
         v.Y -= BallSpin.X * bend;
         BallVelocity = v;
 
+        // Work out exactly when the ball reaches the end of the tunnel it
+        // is heading for, so a fast ball cannot slip through a paddle.
+        if (v.Z != 0)
+        {
+            Side end = v.Z > 0 ? Side.Opponent : Side.Player;
+            float endZ = end == Side.Player ? Tuning.BallRadius : Tuning.TunnelDepth - Tuning.BallRadius;
+            float seconds = MathF.Max(0, (endZ - BallPosition.Z) / v.Z);
+            if (seconds <= Dt)
+            {
+                Advance(seconds);
+                BallPosition = BallPosition with { Z = endZ };
+                if (Touches(end == Side.Player ? PlayerPaddle : OpponentPaddle))
+                {
+                    HitWithPaddle(end);
+                    Advance(Dt - seconds);
+                }
+                else
+                {
+                    BallVelocity = Vector3.Zero;
+                    LastMiss = end;
+                    Events |= TickEvents.Miss;
+                }
+                return;
+            }
+        }
+
         Advance(Dt);
+    }
+
+    // A hit if any part of the ball overlaps the paddle.
+    private bool Touches(Vector2 paddle)
+    {
+        Vector2 gap = Vector2.Abs(new Vector2(BallPosition.X, BallPosition.Y) - paddle);
+        return gap.X <= Tuning.PaddleWidth / 2 + Tuning.BallRadius
+            && gap.Y <= Tuning.PaddleHeight / 2 + Tuning.BallRadius;
+    }
+
+    // The same rules for both paddles. The swipe pushes the ball and rubs
+    // spin onto it, and spin the ball arrived with grips the paddle and
+    // kicks the ball sideways.
+    private void HitWithPaddle(Side side)
+    {
+        Vector2 swipe = side == Side.Player ? PlayerPaddleVelocity : OpponentPaddleVelocity;
+        var facing = new Vector3(0, 0, side == Side.Player ? 1 : -1);
+
+        Vector3 contact = ContactSpeed(facing);
+        Vector2 sideways = new Vector2(BallVelocity.X, BallVelocity.Y) * Tuning.LateralKeep
+            + swipe * Tuning.SwipePush
+            - new Vector2(contact.X, contact.Y) * Tuning.PaddleGrip;
+        BallVelocity = new Vector3(sideways, 0) + facing * Tuning.BasePace;
+
+        // Rubbed on so that the spin bends the ball back against the push:
+        // swipe right and the ball goes out right, then curves left.
+        Vector3 rubbed = Vector3.Cross(new Vector3(swipe, 0), facing) * Tuning.SwipeSpin;
+        Vector2 spin = BallSpin * Tuning.SpinKeep + new Vector2(rubbed.X, rubbed.Y);
+        float size = spin.Length();
+        BallSpin = size > Tuning.MaxSpin ? spin * (Tuning.MaxSpin / size) : spin;
+
+        RallyLength++;
+        Events |= TickEvents.PaddleHit;
     }
 
     // Moves the ball in a straight line for part of a tick and bounces it

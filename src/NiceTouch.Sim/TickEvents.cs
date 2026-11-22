@@ -6,4 +6,6 @@ public enum TickEvents
 {
     None = 0,
     WallBounce = 1,
+    PaddleHit = 2,
+    Miss = 4,
 }

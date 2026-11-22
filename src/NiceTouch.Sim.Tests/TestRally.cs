@@ -24,6 +24,12 @@ internal static class TestRally
         PaddleHeight = 2,
         PaddleHalfLifeSeconds = 0.01f,
         OpponentSpeed = 9,
+        SwipeSpin = 1,
+        MaxSpin = 40,
+        SwipePush = 0.25f,
+        LateralKeep = 0.5f,
+        SpinKeep = 0.5f,
+        PaddleGrip = 0.5f,
     };
 
     // A ball already in flight.

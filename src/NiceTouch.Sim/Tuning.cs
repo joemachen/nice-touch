@@ -32,6 +32,24 @@ public sealed record Tuning
     // Speed down the tunnel off a paddle. Only a wall bite changes it.
     public float BasePace { get; set; } = 24;
 
+    // Spin a paddle rubs onto the ball, in radians per second for each
+    // unit per second of sideways paddle speed, and the most spin the ball
+    // can carry.
+    public float SwipeSpin { get; set; } = 1;
+    public float MaxSpin { get; set; } = 40;
+
+    // The share of the paddle's sideways speed that the ball leaves with.
+    public float SwipePush { get; set; } = 0.25f;
+
+    // The shares of its sideways speed and of its spin that the ball keeps
+    // through a paddle hit.
+    public float LateralKeep { get; set; } = 0.5f;
+    public float SpinKeep { get; set; } = 0.5f;
+
+    // How hard a spinning ball jumps sideways off a paddle. Zero switches
+    // the jump off.
+    public float PaddleGrip { get; set; } = 0.5f;
+
     // How sharply spin bends the path. The curvature of the path is this
     // times the spin, whatever the pace, so a faster ball follows the same
     // curve. Zero switches the bend off.
