@@ -22,7 +22,7 @@ Spec: specs/M1a-the-rally.md (approved by Joe, 2026-11-21).
 
 The rules, each with sim tests written first:
 
-- [ ] Tuning values become one object with defaults, still in one file
+- [x] Tuning values become one object with defaults, still in one file
 - [ ] Flight: spin bends the path, spin fades by a half-life
 - [ ] Walls: clean bounce with no spin, and the spin bite inside pace limits
 - [ ] Paddles: the player's paddle follows its target, hit or miss is decided

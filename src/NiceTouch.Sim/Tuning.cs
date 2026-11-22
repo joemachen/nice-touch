@@ -1,13 +1,18 @@
 namespace NiceTouch.Sim;
 
 // The one place tuning values live until the run arrives (DESIGN.md,
-// "One place for tuning"). Speeds are per second, never per tick.
-public static class Tuning
+// "One place for tuning"). The defaults written here are the game's tuning.
+// The tuning panel edits a copy, and a record compares by value, so "is
+// anything different from the defaults" is one comparison.
+// Speeds are per second, never per tick. Values that fade are half-lives.
+public sealed record Tuning
 {
+    // The tick rate is fixed, not tuned: recordings depend on it.
     public const int TicksPerSecond = 60;
+    public const float TickSeconds = 1f / TicksPerSecond;
 
-    // Tunnel size in world units. Placeholder numbers until M1a tunes them.
-    public const float TunnelWidth = 12;
-    public const float TunnelHeight = 8;
-    public const float TunnelDepth = 30;
+    // Tunnel size in world units.
+    public float TunnelWidth { get; set; } = 12;
+    public float TunnelHeight { get; set; } = 8;
+    public float TunnelDepth { get; set; } = 30;
 }

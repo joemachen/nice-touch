@@ -9,7 +9,7 @@ public partial class Main : Node3D
     private const int Rings = 7;
     private const float FitMargin = 1.1f;
 
-    private readonly Match _match = new();
+    private readonly Match _match = new(new Tuning());
     private Camera3D _camera = null!;
     private Label _tickLabel = null!;
 
@@ -20,7 +20,7 @@ public partial class Main : Node3D
 
         _camera = GetNode<Camera3D>("Camera");
         _tickLabel = GetNode<Label>("Hud/TickLabel");
-        GetNode<MeshInstance3D>("Tunnel").Mesh = BuildTunnelMesh();
+        GetNode<MeshInstance3D>("Tunnel").Mesh = BuildTunnelMesh(_match.Tuning);
 
         GetViewport().SizeChanged += FitCameraToTunnelFace;
         FitCameraToTunnelFace();
@@ -43,16 +43,17 @@ public partial class Main : Node3D
 
         float tanY = Mathf.Tan(Mathf.DegToRad(_camera.Fov) / 2);
         float tanX = tanY * size.X / size.Y;
-        float distance = Mathf.Max(Tuning.TunnelHeight / 2 / tanY, Tuning.TunnelWidth / 2 / tanX);
+        Tuning tuning = _match.Tuning;
+        float distance = Mathf.Max(tuning.TunnelHeight / 2 / tanY, tuning.TunnelWidth / 2 / tanX);
         _camera.Position = new Vector3(0, 0, distance * FitMargin);
     }
 
     // A wireframe: rectangles at even depths, joined along the four corners.
     // The player's end is at z = 0 and the tunnel runs away along -z.
-    private static ImmediateMesh BuildTunnelMesh()
+    private static ImmediateMesh BuildTunnelMesh(Tuning tuning)
     {
-        float w = Tuning.TunnelWidth / 2;
-        float h = Tuning.TunnelHeight / 2;
+        float w = tuning.TunnelWidth / 2;
+        float h = tuning.TunnelHeight / 2;
         Vector2[] corners = [new(-w, -h), new(w, -h), new(w, h), new(-w, h)];
 
         var material = new StandardMaterial3D
@@ -65,7 +66,7 @@ public partial class Main : Node3D
         mesh.SurfaceBegin(Mesh.PrimitiveType.Lines, material);
         for (int ring = 0; ring < Rings; ring++)
         {
-            float z = -Tuning.TunnelDepth * ring / (Rings - 1);
+            float z = -tuning.TunnelDepth * ring / (Rings - 1);
             for (int i = 0; i < corners.Length; i++)
             {
                 Vector2 a = corners[i];
@@ -77,7 +78,7 @@ public partial class Main : Node3D
         foreach (Vector2 c in corners)
         {
             mesh.SurfaceAddVertex(new Vector3(c.X, c.Y, 0));
-            mesh.SurfaceAddVertex(new Vector3(c.X, c.Y, -Tuning.TunnelDepth));
+            mesh.SurfaceAddVertex(new Vector3(c.X, c.Y, -tuning.TunnelDepth));
         }
         mesh.SurfaceEnd();
         return mesh;
