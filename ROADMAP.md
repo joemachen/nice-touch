@@ -39,8 +39,8 @@ The game around them:
       drawn smoothly between ticks
 - [x] Mouse moves the paddle, click serves, cursor hidden and kept in the
       window; R restarts, Esc quits
-- [ ] Debug line, miss message and the "CUSTOM TUNING" notice
-- [ ] Tuning panel on F1, with values remembered between runs
+- [x] Debug line, miss message and the "CUSTOM TUNING" notice
+- [x] Tuning panel on F1, with values remembered between runs
 - [ ] F9 saves a recording to `recordings/`
 - [ ] Three placeholder beeps made in code
 

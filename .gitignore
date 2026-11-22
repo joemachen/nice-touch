@@ -16,6 +16,10 @@ obj/
 .vs/
 TestResults/
 
+# Joe's own tuning values and saved recordings
+tuning.local.json
+recordings/
+
 # Local tool settings
 .claude/settings.local.json
 
