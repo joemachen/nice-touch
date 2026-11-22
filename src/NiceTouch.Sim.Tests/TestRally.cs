@@ -32,6 +32,20 @@ internal static class TestRally
         SpinKeep = 0.5f,
         PaddleGrip = 0.5f,
         MissPauseSeconds = 1,
+
+        // The game around the rally.
+        PlayerLives = 5,
+        OpponentLives = 3,
+        LivesBack = 1,
+        Levels = 6,
+        OpponentSpeedStep = 1,
+        PaceStep = 1,
+        WinnerPoints = 100,
+        RallyHitPoints = 10,
+        BendPoints = 10,
+        KickPoints = 50,
+        NiceTouchMark = 100,
+        LevelBonus = 500,
     };
 
     // A ball already in flight.

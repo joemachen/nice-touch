@@ -22,9 +22,9 @@ Spec: specs/M1b-the-game.md, approved by Joe on 2026-11-21.
 
 - [x] The rally reports two facts about the shot in flight: how far spin has
       bent it and how many wall or floor bites have sped it up
-- [ ] Tuning values for lives, levels, the two level steps, every points
+- [x] Tuning values for lives, levels, the two level steps, every points
       value and the NICE TOUCH mark
-- [ ] Scoring: what a winner pays, NICE TOUCH, the level multiplier
+- [x] Scoring: what a winner pays, NICE TOUCH, the level multiplier
 - [ ] The game: lives, six levels that get quicker, level clear with a life
       back and a bonus, GAME OVER, YOU WIN, and one click to play again
 - [ ] A recording holds a whole game with its final score, lives and level,

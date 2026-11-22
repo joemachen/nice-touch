@@ -93,4 +93,44 @@ public sealed record Tuning
     // Limits on pace after a wall bite, as multiples of BasePace.
     public float PaceMin { get; set; } = 0.6f;
     public float PaceMax { get; set; } = 1.6f;
+
+    // The game around the rally. Whole numbers are counts and points.
+
+    // Lives the player starts a game with, and each opponent starts a
+    // level with.
+    public int PlayerLives { get; set; } = 5;
+    public int OpponentLives { get; set; } = 3;
+
+    // Lives the player gets back for clearing a level, never taking them
+    // above PlayerLives.
+    public int LivesBack { get; set; } = 1;
+
+    // How many levels a game has. Level 1 plays with OpponentSpeed and
+    // BasePace as written above. Each level after adds one step of each.
+    public int Levels { get; set; } = 6;
+    public float OpponentSpeedStep { get; set; } = 1;
+    public float PaceStep { get; set; } = 1;
+
+    // What a winner pays: a flat amount, an amount for each paddle hit in
+    // the rally, and two kinds of style, which are an amount for each unit
+    // spin bent the winning shot and an amount for each wall or floor bite
+    // that sped it up.
+    public int WinnerPoints { get; set; } = 100;
+    public int RallyHitPoints { get; set; } = 10;
+    public int BendPoints { get; set; } = 10;
+    public int KickPoints { get; set; } = 50;
+
+    // Style points on one winner at which the game calls NICE TOUCH and
+    // the style counts double.
+    public int NiceTouchMark { get; set; } = 100;
+
+    // Paid for clearing a level, times the level number.
+    public int LevelBonus { get; set; } = 500;
+
+    // The tuning a level's rally is played with.
+    public Tuning ForLevel(int level) => this with
+    {
+        OpponentSpeed = OpponentSpeed + (level - 1) * OpponentSpeedStep,
+        BasePace = BasePace + (level - 1) * PaceStep,
+    };
 }
