@@ -30,6 +30,7 @@ internal static class TestRally
         LateralKeep = 0.5f,
         SpinKeep = 0.5f,
         PaddleGrip = 0.5f,
+        MissPauseSeconds = 1,
     };
 
     // A ball already in flight.
@@ -39,6 +40,7 @@ internal static class TestRally
             BallPosition = position,
             BallVelocity = velocity,
             BallSpin = spin,
+            Phase = Phase.Rally,
         };
 
     // Steps with the mouse held still at one spot and no click.

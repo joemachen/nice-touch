@@ -32,6 +32,10 @@ public sealed record Tuning
     // Speed down the tunnel off a paddle. Only a wall bite changes it.
     public float BasePace { get; set; } = 24;
 
+    // How long play stops after a miss before the ball is back on the
+    // player's paddle.
+    public float MissPauseSeconds { get; set; } = 1;
+
     // Spin a paddle rubs onto the ball, in radians per second for each
     // unit per second of sideways paddle speed, and the most spin the ball
     // can carry.

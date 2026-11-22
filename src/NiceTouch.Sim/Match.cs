@@ -8,14 +8,18 @@ public sealed class Match
 {
     private const float Dt = Tuning.TickSeconds;
 
+    private int _pauseTicksLeft;
+
     public Match(Tuning tuning)
     {
         // A copy, so nothing outside can change the rules of a running match.
         Tuning = tuning with { };
+        PutBallOnPlayersPaddle();
     }
 
     public Tuning Tuning { get; }
     public long Tick { get; private set; }
+    public Phase Phase { get; internal set; }
     public Vector3 BallPosition { get; internal set; }
     public Vector3 BallVelocity { get; internal set; }
 
@@ -44,8 +48,42 @@ public sealed class Match
     {
         Events = TickEvents.None;
         MovePaddles(input.PaddleTarget);
-        Fly();
+
+        switch (Phase)
+        {
+            case Phase.Serving:
+                // The ball rides on the paddle until the click, and the
+                // serve is a paddle hit like any other.
+                PutBallOnPlayersPaddle();
+                if (input.Serve)
+                {
+                    RallyLength = 0;
+                    HitWithPaddle(Side.Player);
+                    Phase = Phase.Rally;
+                }
+                break;
+
+            case Phase.Rally:
+                Fly();
+                break;
+
+            case Phase.PointOver:
+                if (--_pauseTicksLeft <= 0)
+                {
+                    PutBallOnPlayersPaddle();
+                    Phase = Phase.Serving;
+                }
+                break;
+        }
+
         Tick++;
+    }
+
+    private void PutBallOnPlayersPaddle()
+    {
+        BallPosition = new Vector3(PlayerPaddle, Tuning.BallRadius);
+        BallVelocity = Vector3.Zero;
+        BallSpin = Vector2.Zero;
     }
 
     private void MovePaddles(Vector2 playerTarget)
@@ -108,9 +146,12 @@ public sealed class Match
                 }
                 else
                 {
+                    // Play stops where the ball got past, for a moment.
                     BallVelocity = Vector3.Zero;
                     LastMiss = end;
                     Events |= TickEvents.Miss;
+                    Phase = Phase.PointOver;
+                    _pauseTicksLeft = (int)MathF.Round(Tuning.MissPauseSeconds * Tuning.TicksPerSecond);
                 }
                 return;
             }

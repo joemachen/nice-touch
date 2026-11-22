@@ -28,7 +28,7 @@ The rules, each with sim tests written first:
 - [x] Paddles: the player's paddle follows its target, hit or miss is decided
       where the ball crossed, the swipe makes spin and pushes, and spin
       bites the paddle
-- [ ] Serve from the paddle, and the miss, pause and return to serve
+- [x] Serve from the paddle, and the miss, pause and return to serve
 - [x] Placeholder opponent that chases and recentres
 - [ ] The same inputs played twice give exactly the same rally
 - [ ] Recording format, and replay of a recording in a test
