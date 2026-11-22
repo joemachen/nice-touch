@@ -11,10 +11,11 @@ namespace NiceTouch;
 
 // A box for every tuning value, built from the sim's Tuning so the two can
 // never drift apart. It only edits numbers: Main decides what a change means.
+// Counts and points are whole numbers, and what is typed for one is rounded.
 public partial class TuningPanel : PanelContainer
 {
     private static readonly PropertyInfo[] Values = typeof(Tuning).GetProperties()
-        .Where(p => p.PropertyType == typeof(float) && p.CanWrite)
+        .Where(p => (p.PropertyType == typeof(float) || p.PropertyType == typeof(int)) && p.CanWrite)
         .ToArray();
 
     private readonly Dictionary<PropertyInfo, LineEdit> _boxes = [];
@@ -52,7 +53,7 @@ public partial class TuningPanel : PanelContainer
 
         var column = new VBoxContainer();
         column.AddThemeConstantOverride("separation", 12);
-        column.AddChild(new Label { Text = "Tuning. Changing a value restarts the rally." });
+        column.AddChild(new Label { Text = "Tuning. Changing a value restarts the game." });
         column.AddChild(new ScrollContainer { CustomMinimumSize = new Vector2(440, 480), Name = "Scroll" });
         column.GetNode("Scroll").AddChild(rows);
         column.AddChild(buttons);
@@ -92,32 +93,30 @@ public partial class TuningPanel : PanelContainer
     private void ShowValues()
     {
         foreach ((PropertyInfo value, LineEdit box) in _boxes)
-            box.Text = ((float)value.GetValue(_tuning)!).ToString(CultureInfo.InvariantCulture);
+            box.Text = Convert.ToSingle(value.GetValue(_tuning)).ToString(CultureInfo.InvariantCulture);
     }
 
     // Takes what was typed if it is a number that makes sense. Every tuning
-    // value is a size, a speed, a share or a time, so none can be negative.
+    // value is a size, a speed, a share, a time, a count or an amount of
+    // points, so none can be negative.
     private void Commit(PropertyInfo value, LineEdit box)
     {
         bool isNumber = float.TryParse(box.Text, NumberStyles.Float, CultureInfo.InvariantCulture, out float typed);
-        if (!isNumber || !float.IsFinite(typed) || typed < 0 || typed == (float)value.GetValue(_tuning)!)
-        {
-            ShowValues();
-            return;
-        }
-
         Tuning changed = _tuning with { };
-        value.SetValue(changed, typed);
+        // Far beyond any value that makes sense, and safe to round.
+        if (isNumber && typed >= 0 && typed <= 1e9f)
+            value.SetValue(changed, Convert.ChangeType(typed, value.PropertyType));
         Apply(changed);
     }
 
+    // The boxes are filled in again even when nothing changed, which puts
+    // back a value that was typed and not taken.
     private void Apply(Tuning tuning)
     {
-        if (tuning == _tuning)
-            return;
-
+        bool changed = tuning != _tuning;
         _tuning = tuning;
         ShowValues();
-        Changed?.Invoke(tuning);
+        if (changed)
+            Changed?.Invoke(tuning);
     }
 }

@@ -29,9 +29,9 @@ Spec: specs/M1b-the-game.md, approved by Joe on 2026-11-21.
       back and a bonus, GAME OVER, YOU WIN, and one click to play again
 - [x] A recording holds a whole game with its final score, lives and level,
       and replays to them
-- [ ] On screen: score, level and both sides' lives, LEVEL n, the points
+- [x] On screen: score, level and both sides' lives, LEVEL n, the points
       breakdown, NICE TOUCH with its beep, LEVEL CLEAR, GAME OVER, YOU WIN
-- [ ] The new values join the tuning panel
+- [x] The new values join the tuning panel
 - [ ] Scripted games played at every level, with the numbers reported to Joe
 - [ ] QA handoff to Joe
 

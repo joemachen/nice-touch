@@ -4,7 +4,7 @@ using NiceTouch.Sim;
 
 namespace NiceTouch;
 
-// Placeholder sound: three plain beeps made here in code, so there are no
+// Placeholder sound: four plain beeps made here in code, so there are no
 // sound files to credit. Real sound arrives in M2.
 public partial class Beeps : Node
 {
@@ -13,12 +13,14 @@ public partial class Beeps : Node
     private readonly AudioStreamPlayer _paddleHit = Player(pitch: 880, seconds: 0.07f);
     private readonly AudioStreamPlayer _wallBounce = Player(pitch: 440, seconds: 0.05f);
     private readonly AudioStreamPlayer _miss = Player(pitch: 150, seconds: 0.4f);
+    private readonly AudioStreamPlayer _niceTouch = Player(pitch: 1320, seconds: 0.5f);
 
     public override void _Ready()
     {
         AddChild(_paddleHit);
         AddChild(_wallBounce);
         AddChild(_miss);
+        AddChild(_niceTouch);
     }
 
     // Plays a beep for each thing the sim says happened this tick.
@@ -30,6 +32,8 @@ public partial class Beeps : Node
             _wallBounce.Play();
         if (events.HasFlag(TickEvents.Miss))
             _miss.Play();
+        if (events.HasFlag(TickEvents.NiceTouch))
+            _niceTouch.Play();
     }
 
     // A sine tone that fades out, as 16-bit samples.
