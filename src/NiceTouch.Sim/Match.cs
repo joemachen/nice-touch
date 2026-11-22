@@ -22,6 +22,16 @@ public sealed class Match
         PutBallOnPlayersPaddle();
     }
 
+    // The rally for the next level of a game. The paddles stay where they
+    // were, so nothing jumps and the level's first swipe is measured from
+    // where the paddle really was.
+    internal Match(Tuning tuning, Match previous) : this(tuning)
+    {
+        PlayerPaddle = previous.PlayerPaddle;
+        OpponentPaddle = previous.OpponentPaddle;
+        PutBallOnPlayersPaddle();
+    }
+
     public Tuning Tuning { get; }
     public long Tick { get; private set; }
     public Phase Phase { get; internal set; }
