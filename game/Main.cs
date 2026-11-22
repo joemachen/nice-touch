@@ -17,6 +17,7 @@ public partial class Main : Node3D
     private const ulong NoticeMsec = 6000;
 
     private readonly RallyView _view = new();
+    private readonly Beeps _beeps = new();
     private readonly Label _debugLine = new();
     private readonly Label _message = new();
     private readonly Label _customTuning = new() { Text = "CUSTOM TUNING" };
@@ -39,6 +40,7 @@ public partial class Main : Node3D
 
         _camera = GetNode<Camera3D>("Camera");
         AddChild(_view);
+        AddChild(_beeps);
         BuildHud();
         _panel.Changed += OnTuningChanged;
         _panel.Closed += CloseTuningPanel;
@@ -82,6 +84,7 @@ public partial class Main : Node3D
         _inputs.Add(input);
         _match.Step(input);
         _view.Take(_match);
+        _beeps.Play(_match.Events);
     }
 
     public override void _Process(double delta)
