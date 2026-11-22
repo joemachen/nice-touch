@@ -4,13 +4,16 @@ Working title. An original 3D tunnel pong game about spin: swipe the paddle
 through the ball to bend the shot. It will grow into a roguelike run with boss
 opponents.
 
-**Status:** foundation (milestone M0). The game opens an empty tunnel and
-nothing else. There is nothing to play yet. See [ROADMAP.md](ROADMAP.md) for
-what is being built now.
+**Status:** the rally (milestone M1a) is built and in QA. You can serve,
+rally against a placeholder opponent and put spin on the ball. There is no
+score, no lives and no levels yet. See [ROADMAP.md](ROADMAP.md) for what is
+being built now.
 
 ## Run it
 
-- **`run.bat`** builds the game and opens it.
+- **`run.bat`** builds the game and opens it. Move the mouse to move the
+  paddle and click to serve. F1 opens the tuning panel, F9 saves a recording
+  to `recordings/`, R restarts the rally and Esc quits.
 - **`test.bat`** builds, runs the rules tests, then boots the game with no
   window to check it starts. The last line says PASS or FAIL.
 
