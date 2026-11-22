@@ -24,7 +24,7 @@ The rules, each with sim tests written first:
 
 - [x] Tuning values become one object with defaults, still in one file
 - [x] Flight: spin bends the path, spin fades by a half-life
-- [ ] Walls: clean bounce with no spin, and the spin bite inside pace limits
+- [x] Walls: clean bounce with no spin, and the spin bite inside pace limits
 - [ ] Paddles: the player's paddle follows its target, hit or miss is decided
       where the ball crossed, the swipe makes spin and pushes, and spin
       bites the paddle

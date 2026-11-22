@@ -16,6 +16,11 @@ public sealed record Tuning
     public float TunnelHeight { get; set; } = 8;
     public float TunnelDepth { get; set; } = 30;
 
+    public float BallRadius { get; set; } = 0.5f;
+
+    // Speed down the tunnel off a paddle. Only a wall bite changes it.
+    public float BasePace { get; set; } = 24;
+
     // How sharply spin bends the path. The curvature of the path is this
     // times the spin, whatever the pace, so a faster ball follows the same
     // curve. Zero switches the bend off.
@@ -23,4 +28,15 @@ public sealed record Tuning
 
     // Spin loses half its strength in this many seconds.
     public float SpinHalfLifeSeconds { get; set; } = 3;
+
+    // How hard spin kicks the ball's pace when it bites a wall. Zero
+    // switches the kick off.
+    public float WallGrip { get; set; } = 0.4f;
+
+    // The share of the biting spin a wall bounce uses up, from 0 to 1.
+    public float WallSpinLoss { get; set; } = 0.4f;
+
+    // Limits on pace after a wall bite, as multiples of BasePace.
+    public float PaceMin { get; set; } = 0.6f;
+    public float PaceMax { get; set; } = 1.6f;
 }

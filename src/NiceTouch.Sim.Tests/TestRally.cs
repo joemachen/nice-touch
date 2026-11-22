@@ -14,6 +14,12 @@ internal static class TestRally
         TunnelDepth = 30,
         SpinCurve = 0.001f,
         SpinHalfLifeSeconds = 3,
+        BallRadius = 0.5f,
+        BasePace = 24,
+        WallGrip = 0.4f,
+        WallSpinLoss = 0.4f,
+        PaceMin = 0.6f,
+        PaceMax = 1.6f,
     };
 
     // A ball already in flight.
