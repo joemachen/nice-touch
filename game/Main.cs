@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 using Godot;
@@ -12,17 +13,24 @@ namespace NiceTouch;
 public partial class Main : Node3D
 {
     private const float FitMargin = 1.1f;
+    private const string Keys = "F1 tuning    F9 save recording    R restart    Esc quit";
+    private const ulong NoticeMsec = 6000;
 
     private readonly RallyView _view = new();
     private readonly Label _debugLine = new();
     private readonly Label _message = new();
     private readonly Label _customTuning = new() { Text = "CUSTOM TUNING" };
+    private readonly Label _notice = new() { Text = Keys };
     private readonly TuningPanel _panel = new();
+
+    // Every input since this rally session began, for the recorder.
+    private readonly List<TickInput> _inputs = [];
 
     private Tuning _tuning = new();
     private Match _match = null!;
     private Camera3D _camera = null!;
     private bool _serveClicked;
+    private ulong _noticeUntilMsec;
 
     public override void _Ready()
     {
@@ -45,6 +53,7 @@ public partial class Main : Node3D
     private void StartRally()
     {
         _match = new Match(_tuning);
+        _inputs.Clear();
         _serveClicked = false;
         _view.Reset(_match);
         FitCameraToTunnelFace();
@@ -68,8 +77,10 @@ public partial class Main : Node3D
             (mouse.X - 0.5f) * _tuning.TunnelWidth,
             (0.5f - mouse.Y) * _tuning.TunnelHeight);
 
-        _match.Step(new TickInput(target, _serveClicked));
+        var input = new TickInput(target, _serveClicked);
         _serveClicked = false;
+        _inputs.Add(input);
+        _match.Step(input);
         _view.Take(_match);
     }
 
@@ -86,6 +97,9 @@ public partial class Main : Node3D
             Phase.Serving => "Click to serve",
             _ => "",
         };
+
+        if (Time.GetTicksMsec() > _noticeUntilMsec)
+            _notice.Text = Keys;
     }
 
     public override void _UnhandledInput(InputEvent @event)
@@ -106,6 +120,9 @@ public partial class Main : Node3D
                 _panel.Open(_tuning);
                 Input.MouseMode = Input.MouseModeEnum.Visible;
                 break;
+            case Key.F9:
+                SaveRecording();
+                break;
             case Key.R:
                 StartRally();
                 break;
@@ -117,6 +134,25 @@ public partial class Main : Node3D
 
     // The boot smoke test in test.bat reads this line.
     public override void _ExitTree() => GD.Print($"sim ticks at exit: {_match.Tick}");
+
+    // Writes the session so far to the recordings folder beside run.bat and
+    // says where it went.
+    private void SaveRecording()
+    {
+        string name = $"rally-{DateTime.Now:yyyyMMdd-HHmmss}.json";
+        try
+        {
+            string folder = Path.Combine(RepoFolder, "recordings");
+            Directory.CreateDirectory(folder);
+            File.WriteAllText(Path.Combine(folder, name), Recording.Save(_match, _inputs));
+            _notice.Text = $"Saved recordings/{name}";
+        }
+        catch (Exception e) when (e is IOException or UnauthorizedAccessException)
+        {
+            _notice.Text = $"The recording could not be saved: {e.Message}";
+        }
+        _noticeUntilMsec = Time.GetTicksMsec() + NoticeMsec;
+    }
 
     private void CloseTuningPanel()
     {
@@ -155,7 +191,7 @@ public partial class Main : Node3D
     }
 
     // The game runs from source, so its own files sit beside run.bat, one
-    // folder above the Godot project. Git ignores this one.
+    // folder above the Godot project. Git ignores them.
     private static string RepoFolder => Path.GetFullPath(Path.Combine(ProjectSettings.GlobalizePath("res://"), ".."));
     private static string RememberedTuningPath => Path.Combine(RepoFolder, "tuning.local.json");
 
@@ -171,6 +207,7 @@ public partial class Main : Node3D
         _message.GrowVertical = Control.GrowDirection.Begin;
         Place(hud, _customTuning, Control.LayoutPreset.TopRight, fontSize: 18);
         _customTuning.Modulate = new Color(1f, 0.8f, 0.2f);
+        Place(hud, _notice, Control.LayoutPreset.BottomLeft, fontSize: 16);
 
         hud.AddChild(_panel);
     }

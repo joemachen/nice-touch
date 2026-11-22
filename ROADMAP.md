@@ -41,7 +41,7 @@ The game around them:
       window; R restarts, Esc quits
 - [x] Debug line, miss message and the "CUSTOM TUNING" notice
 - [x] Tuning panel on F1, with values remembered between runs
-- [ ] F9 saves a recording to `recordings/`
+- [x] F9 saves a recording to `recordings/`
 - [ ] Three placeholder beeps made in code
 
 Sign-off:
