@@ -57,4 +57,5 @@ session. Newest first.
   swipe.
 - Milestone M1a is signed off: every item on the feel checklist is a yes.
   Next is M1b, which turns the rally into a game with lives, levels and a
-  score. Nothing new to play from that yet.
+  score. Its spec is written and waiting for approval. Nothing new to play
+  from it yet.

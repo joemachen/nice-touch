@@ -22,8 +22,8 @@ Goal: the rally becomes a game you can win and lose.
   restart
 - The "Nice touch" call-out for big plays
 
-Spec: not written yet. It comes first, for Joe's approval, and the task list
-is written here once it is approved.
+Spec: specs/M1b-the-game.md (awaiting Joe's approval). The task list is
+written here once the spec is approved.
 
 Exit test: written in the M1b spec.
 
