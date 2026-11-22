@@ -27,7 +27,7 @@ Spec: specs/M1b-the-game.md, approved by Joe on 2026-11-21.
 - [x] Scoring: what a winner pays, NICE TOUCH, the level multiplier
 - [x] The game: lives, six levels that get quicker, level clear with a life
       back and a bonus, GAME OVER, YOU WIN, and one click to play again
-- [ ] A recording holds a whole game with its final score, lives and level,
+- [x] A recording holds a whole game with its final score, lives and level,
       and replays to them
 - [ ] On screen: score, level and both sides' lives, LEVEL n, the points
       breakdown, NICE TOUCH with its beep, LEVEL CLEAR, GAME OVER, YOU WIN

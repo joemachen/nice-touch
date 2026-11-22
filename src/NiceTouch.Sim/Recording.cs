@@ -4,10 +4,13 @@ using System.Text.Json.Serialization;
 
 namespace NiceTouch.Sim;
 
-// A rally session as it is saved to a file: the tuning in use, every input
-// since the session began, and where the ball ended up. The sim is
-// deterministic, so replaying the inputs with the same tuning must arrive at
-// the same final ball state. A recording that does not has caught a bug.
+// A game as it is saved to a file: the tuning in use, every input since the
+// game began, and how it stood at the end. The sim is deterministic, so
+// replaying the inputs with the same tuning must arrive at the same score,
+// lives, level and ball. A recording that does not has caught a bug.
+//
+// Recordings saved before there was a game (M1a) hold a rally session with
+// no score, lives or level. They still load, and Replay plays them.
 public sealed class Recording
 {
     private static readonly JsonSerializerOptions Json = new()
@@ -30,17 +33,25 @@ public sealed class Recording
     public required Vector3 FinalBallVelocity { get; init; }
     public required Vector2 FinalBallSpin { get; init; }
 
-    // The text of a recording file for a match and the inputs that made it.
-    public static string Save(Match match, IReadOnlyList<TickInput> inputs)
+    // How the game stood. A rally recording from M1a has none of these.
+    public int? FinalScore { get; init; }
+    public int? FinalLives { get; init; }
+    public int? FinalLevel { get; init; }
+
+    // The text of a recording file for a game and the inputs that made it.
+    public static string Save(Game game, IReadOnlyList<TickInput> inputs)
     {
         var recording = new Recording
         {
-            Tuning = match.Tuning,
+            Tuning = game.Tuning,
             Targets = inputs.SelectMany(i => new[] { i.PaddleTarget.X, i.PaddleTarget.Y }).ToArray(),
             ServeTicks = Enumerable.Range(0, inputs.Count).Where(i => inputs[i].Serve).ToArray(),
-            FinalBallPosition = match.BallPosition,
-            FinalBallVelocity = match.BallVelocity,
-            FinalBallSpin = match.BallSpin,
+            FinalBallPosition = game.Match.BallPosition,
+            FinalBallVelocity = game.Match.BallVelocity,
+            FinalBallSpin = game.Match.BallSpin,
+            FinalScore = game.Score,
+            FinalLives = game.PlayerLives,
+            FinalLevel = game.Level,
         };
         return JsonSerializer.Serialize(recording, Json);
     }
@@ -57,7 +68,17 @@ public sealed class Recording
         return inputs;
     }
 
-    // Plays the recorded inputs through a fresh match.
+    // Plays the recorded inputs through a fresh game.
+    public Game ReplayGame()
+    {
+        var game = new Game(Tuning);
+        foreach (TickInput input in Inputs())
+            game.Step(input);
+        return game;
+    }
+
+    // Plays the inputs of an M1a rally recording through a fresh rally with
+    // no game around it, which is how it was recorded.
     public Match Replay()
     {
         var match = new Match(Tuning);

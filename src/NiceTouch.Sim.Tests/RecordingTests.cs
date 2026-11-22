@@ -2,7 +2,9 @@ using System.Numerics;
 
 namespace NiceTouch.Sim.Tests;
 
-// Determinism, and the recording that relies on it.
+// The rally is deterministic, and tuning values survive being written as
+// text. Saving and replaying whole games is in GameRecordingTests, and the
+// recording saved from the real game in M1a is in SavedRecordingTests.
 public class RecordingTests
 {
     // A few seconds of made-up play: the mouse wanders, sweeps hard now and
@@ -69,47 +71,6 @@ public class RecordingTests
         Match second = Play(TestRally.Tuning(), inputs);
 
         AssertSameState(first, second);
-    }
-
-    [Fact]
-    public void A_saved_recording_replays_to_exactly_the_same_final_ball_position()
-    {
-        List<TickInput> inputs = ScriptedInputs(1800);
-        Match played = Play(TestRally.Tuning(), inputs);
-        string file = Recording.Save(played, inputs);
-
-        Recording recording = Recording.Load(file);
-        Match replayed = recording.Replay();
-
-        Assert.Equal(played.BallPosition, recording.FinalBallPosition);
-        Assert.Equal(recording.FinalBallPosition, replayed.BallPosition);
-        AssertSameState(played, replayed);
-    }
-
-    [Fact]
-    public void A_recording_carries_the_tuning_it_was_played_with()
-    {
-        // Not the defaults, and it changes how the rally goes.
-        Tuning custom = TestRally.Tuning() with { BasePace = 31, SpinCurve = 0.002f, OpponentSpeed = 14 };
-        List<TickInput> inputs = ScriptedInputs(900);
-        Match played = Play(custom, inputs);
-
-        Recording recording = Recording.Load(Recording.Save(played, inputs));
-
-        Assert.Equal(custom, recording.Tuning);
-        AssertSameState(played, recording.Replay());
-        Assert.NotEqual(Play(TestRally.Tuning(), inputs).BallPosition, played.BallPosition);
-    }
-
-    [Fact]
-    public void A_recording_holds_every_input()
-    {
-        List<TickInput> inputs = ScriptedInputs(300);
-        Match played = Play(TestRally.Tuning(), inputs);
-
-        Recording recording = Recording.Load(Recording.Save(played, inputs));
-
-        Assert.Equal(inputs, recording.Inputs());
     }
 
     [Fact]
