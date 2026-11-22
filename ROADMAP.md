@@ -18,14 +18,26 @@ Last updated: 2026-11-21
 
 Goal: the rally becomes a game you can win and lose.
 
-- Lives, levels, scoring, score and lives display, level clear, game over,
-  restart
-- The "Nice touch" call-out for big plays
+Spec: specs/M1b-the-game.md, approved by Joe on 2026-11-21.
 
-Spec: specs/M1b-the-game.md (awaiting Joe's approval). The task list is
-written here once the spec is approved.
+- [ ] The rally reports two facts about the shot in flight: how far spin has
+      bent it and how many wall or floor bites have sped it up
+- [ ] Tuning values for lives, levels, the two level steps, every points
+      value and the NICE TOUCH mark
+- [ ] Scoring: what a winner pays, NICE TOUCH, the level multiplier
+- [ ] The game: lives, six levels that get quicker, level clear with a life
+      back and a bonus, GAME OVER, YOU WIN, and one click to play again
+- [ ] A recording holds a whole game with its final score, lives and level,
+      and replays to them
+- [ ] On screen: score, level and both sides' lives, LEVEL n, the points
+      breakdown, NICE TOUCH with its beep, LEVEL CLEAR, GAME OVER, YOU WIN
+- [ ] The new values join the tuning panel
+- [ ] Scripted games played at every level, with the numbers reported to Joe
+- [ ] QA handoff to Joe
 
-Exit test: written in the M1b spec.
+Exit test: `test.bat` ends with PASS and CI is green, Joe saves a recording
+of a whole game that replays in a test to the same final score, and he
+answers yes to every item on the checklist in the spec.
 
 ## Next: M2, juice and shell
 
@@ -103,3 +115,8 @@ In intended order. Details get written when each becomes Next.
 | 2026-11-21 | DESIGN.md gains a "Spin" section summarising the M1a rules | The centre of the game should be described in the design, not only in a milestone spec |
 | 2026-11-21 | Gravity added to M1a as a tuning value that starts at zero. Changes the approved spec | In first QA Joe found the ball floaty, "like it's missing some gravity". At zero nothing changes, so he can decide by feel whether it stays. If it does, up and down stop behaving like left and right, and DESIGN.md will say so |
 | 2026-11-21 | Gravity stays, with a starting value of 7. DESIGN.md gains a "Gravity" section | Joe tried it in QA and 7 "feels like good starting gravity". In scripted rallies at 7 the ball almost never lost its bounce, so no extra rule for lift is needed yet |
+| 2026-11-21 | M1b spec approved as written | Joe read it and agreed to the three choices below |
+| 2026-11-21 | Points come only from winners, and spin is what raises them: bend, wall and floor kicks, and NICE TOUCH. A small bonus for each hit in the rally | Points for every return would reward keeping the ball in play, not a nice touch |
+| 2026-11-21 | Five lives, with one back for each level cleared | No lives back allowed 5 misses across about 18 winners, which looked too harsh against Joe's recording. Refilling every level looked too soft. All three numbers are tuning values |
+| 2026-11-21 | Six levels with an ending (YOU WIN), not an endless score chase | An ending answers "can I win". Endless escalation belongs to the run (M3) |
+| 2026-11-21 | DESIGN.md gains a "Scoring" section | The spec promised it, and scoring is where the game says what it values |

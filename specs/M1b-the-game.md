@@ -1,6 +1,7 @@
 # M1b: the game
 
-Status: **draft, awaiting Joe's approval.** No code is written until approved.
+Status: **approved by Joe on 2026-11-21**, as written, including the three
+choices at the end.
 
 ## Goal
 

@@ -66,6 +66,25 @@ back spin bite. A ball with no bounce left rolls. This makes up and down
 different from left and right: side spin plays off the side walls now and
 then, top and back spin play off the floor on most shots.
 
+## Scoring
+
+The full rules are in specs/M1b-the-game.md. In short:
+
+- **Only a winner scores.** Points are paid when the opponent misses, never
+  for a return. Missing costs a life and no points.
+- **Spin is what raises the price.** A winner pays a flat amount, a little
+  for each paddle hit in the rally, and then for style: *bend*, how far spin
+  carried the winning shot off a straight line, and *kick*, each wall or
+  floor bite that sped it up. Gravity's drop is not bend.
+- **Nice touch.** When the style on a winner reaches a mark, the game calls
+  out NICE TOUCH and the style points count double.
+- **Later levels pay more.** The total is multiplied by the level number,
+  and clearing a level pays a bonus.
+- **The player sees the sum.** After every winner the screen lists what was
+  paid for, line by line. That is pillar 2 applied to the score.
+
+Every amount is a tuning value.
+
 ## The three layers
 
 Built in this order. Each layer ships playable before the next starts.
