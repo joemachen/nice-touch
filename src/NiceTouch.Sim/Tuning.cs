@@ -60,7 +60,7 @@ public sealed record Tuning
     // Spin a paddle rubs onto the ball, in radians per second for each
     // unit per second of sideways paddle speed, and the most spin the ball
     // can carry.
-    public float SwipeSpin { get; set; } = 1;
+    public float SwipeSpin { get; set; } = 2;
     public float MaxSpin { get; set; } = 40;
 
     // The share of the paddle's sideways speed that the ball leaves with.
