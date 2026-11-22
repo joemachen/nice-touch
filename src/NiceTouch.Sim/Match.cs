@@ -10,6 +10,11 @@ public sealed class Match
 
     private int _pauseTicksLeft;
 
+    // The sideways speed spin has given the ball since the latest paddle
+    // hit, and how far that speed has carried it.
+    private Vector2 _spinDrift;
+    private Vector2 _spinCarry;
+
     public Match(Tuning tuning)
     {
         // A copy, so nothing outside can change the rules of a running match.
@@ -30,6 +35,21 @@ public sealed class Match
 
     // Paddle hits since the serve.
     public int RallyLength { get; private set; }
+
+    // Two readings on the shot in flight, counted from the latest paddle
+    // hit. Scoring pays for them. They report on the rally and change
+    // nothing in it.
+    //
+    // Bend is how far spin has carried the ball off a straight line. It is
+    // measured by keeping a separate account that only spin pays into: each
+    // tick the push spin gives the ball is added to a drift speed, and the
+    // drift speed is added to a drift distance. Gravity, the swipe and the
+    // walls never enter that account, so a ball with no spin reads zero
+    // however far it drops, and a bounce does not undo bend already made.
+    public float ShotBend => _spinCarry.Length();
+
+    // Wall and floor bites that left the ball faster down the tunnel.
+    public int ShotKicks { get; private set; }
 
     // Who missed most recently, if anyone has yet.
     public Side? LastMiss { get; private set; }
@@ -126,6 +146,7 @@ public sealed class Match
         float bend = Tuning.SpinCurve * v.Z * MathF.Abs(v.Z) * Dt;
         v.X += BallSpin.Y * bend;
         v.Y -= BallSpin.X * bend;
+        _spinDrift += new Vector2(BallSpin.Y, -BallSpin.X) * bend;
 
         // Gravity works by time, not by distance, so unlike the bend a
         // faster ball flies flatter. Half is applied before the ball moves
@@ -208,6 +229,9 @@ public sealed class Match
         float size = spin.Length();
         BallSpin = size > Tuning.MaxSpin ? spin * (Tuning.MaxSpin / size) : spin;
 
+        _spinDrift = Vector2.Zero;
+        _spinCarry = Vector2.Zero;
+        ShotKicks = 0;
         RallyLength++;
         Events |= TickEvents.PaddleHit;
     }
@@ -216,6 +240,7 @@ public sealed class Match
     // off the walls.
     private void Advance(float seconds)
     {
+        _spinCarry += _spinDrift * seconds;
         Vector3 p = BallPosition + BallVelocity * seconds;
         Vector3 v = BallVelocity;
         int fromSide = Reflect(ref p.X, ref v.X, Tuning.TunnelWidth / 2 - Tuning.BallRadius);
@@ -268,6 +293,8 @@ public sealed class Match
         float slowest = Tuning.BasePace * Tuning.PaceMin;
         float fastest = Tuning.BasePace * Tuning.PaceMax;
         v.Z = travel * MathF.Max(slowest, MathF.Min(pace, fastest));
+        if (MathF.Abs(v.Z) > MathF.Abs(BallVelocity.Z))
+            ShotKicks++;
         BallVelocity = v;
 
         // Side walls are bitten by side spin, floor and ceiling by top spin.

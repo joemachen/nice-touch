@@ -20,7 +20,7 @@ Goal: the rally becomes a game you can win and lose.
 
 Spec: specs/M1b-the-game.md, approved by Joe on 2026-11-21.
 
-- [ ] The rally reports two facts about the shot in flight: how far spin has
+- [x] The rally reports two facts about the shot in flight: how far spin has
       bent it and how many wall or floor bites have sped it up
 - [ ] Tuning values for lives, levels, the two level steps, every points
       value and the NICE TOUCH mark
