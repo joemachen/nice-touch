@@ -16,9 +16,10 @@ obj/
 .vs/
 TestResults/
 
-# Joe's own tuning values and saved recordings
-tuning.local.json
-recordings/
+# Joe's own tuning values and saved recordings, beside run.bat. Recordings
+# kept as tests live in src/NiceTouch.Sim.Tests/Recordings and are committed.
+/tuning.local.json
+/recordings/
 
 # Local tool settings
 .claude/settings.local.json

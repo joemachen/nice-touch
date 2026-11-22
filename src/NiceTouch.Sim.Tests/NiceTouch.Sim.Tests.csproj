@@ -21,4 +21,9 @@
     <Using Include="Xunit" />
   </ItemGroup>
 
+  <!-- Recordings saved from the game, replayed by SavedRecordingTests. -->
+  <ItemGroup>
+    <None Update="Recordings\*.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
 </Project>

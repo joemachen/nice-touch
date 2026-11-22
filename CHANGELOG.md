@@ -50,6 +50,8 @@ session. Newest first.
   rolls along the floor until a paddle lifts it. The strength is a new value
   in the tuning panel, *Gravity*, which starts at 7. Setting it to 0 gives
   the old weightless flight.
+- Joe's first saved recording (55 seconds, four serves) replays exactly in
+  the rules tests, and is now replayed on every run of `test.bat`.
 - The same swipe now puts twice as much spin on the ball (*Swipe spin* is 2
   by default, from Joe's tuning), so the cap is reached with a gentler
   swipe.

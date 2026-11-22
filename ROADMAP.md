@@ -47,7 +47,7 @@ The game around them:
 
 Sign-off:
 
-- [ ] Joe saves a recording and it replays exactly in a test
+- [x] Joe saves a recording and it replays exactly in a test
 - [ ] Joe answers yes to every item on the feel checklist
 
 Exit test: sim tests green, and Joe can rally, bend shots, and answer yes to
