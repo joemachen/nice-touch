@@ -30,8 +30,8 @@ The rules, each with sim tests written first:
       bites the paddle
 - [x] Serve from the paddle, and the miss, pause and return to serve
 - [x] Placeholder opponent that chases and recentres
-- [ ] The same inputs played twice give exactly the same rally
-- [ ] Recording format, and replay of a recording in a test
+- [x] The same inputs played twice give exactly the same rally
+- [x] Recording format, and replay of a recording in a test
 
 The game around them:
 

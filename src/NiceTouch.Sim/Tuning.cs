@@ -1,3 +1,5 @@
+using System.Text.Json;
+
 namespace NiceTouch.Sim;
 
 // The one place tuning values live until the run arrives (DESIGN.md,
@@ -10,6 +12,14 @@ public sealed record Tuning
     // The tick rate is fixed, not tuned: recordings depend on it.
     public const int TicksPerSecond = 60;
     public const float TickSeconds = 1f / TicksPerSecond;
+
+    private static readonly JsonSerializerOptions Readable = new() { WriteIndented = true };
+
+    // As text, for copying out of the tuning panel and for remembering
+    // values between runs. A value the text does not name keeps its default.
+    public string ToJson() => JsonSerializer.Serialize(this, Readable);
+
+    public static Tuning FromJson(string text) => JsonSerializer.Deserialize<Tuning>(text) ?? new Tuning();
 
     // Tunnel size in world units.
     public float TunnelWidth { get; set; } = 12;
